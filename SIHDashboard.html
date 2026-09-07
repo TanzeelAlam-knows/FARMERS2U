@@ -550,12 +550,12 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-icon"><i class="fas fa-seedling"></i></div>
-        <div class="stat-value" id="total-books">10</div>
+        <div class="stat-value" id="total-books">200</div>
         <div class="stat-label">Active Crop Listings</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon"><i class="fas fa-boxes"></i></div>
-        <div class="stat-value" id="available-books">10</div>
+        <div class="stat-value" id="available-books">200</div>
         <div class="stat-label">Ready for Direct Trade</div>
       </div>
       <div class="stat-card">
@@ -599,7 +599,7 @@
     <div class="dashboard">
       <!-- Marketplace Catalogue Section -->
       <div class="card active" id="books-section">
-        <h2><i class="fas fa-store"></i> Farmer-to-Consumer Direct Marketplace</h2>
+        <h2><i class="fas fa-store"></i> Farmer-to-Consumer Direct Marketplace (200 Items)</h2>
         <div class="book-grid" id="book-grid"></div>
       </div>
       
@@ -641,7 +641,7 @@
       <div class="card" id="librarian-section">
         <h2><i class="fas fa-chart-line"></i> Supply Chain & Logistics Management</h2>
         <div>
-          <!-- ADMIN USER MANAGEMENT PANEL (Requested Feature) -->
+          <!-- ADMIN USER MANAGEMENT PANEL -->
           <div class="admin-section" style="border-color: #4285F4; background: rgba(66, 133, 244, 0.08);">
             <h3 style="color: #4285F4;"><i class="fas fa-users-cog"></i> Master User Management & Audit Log</h3>
             <p style="font-size:0.8rem; margin-bottom:15px; color:#ccc;">View all registered users, promote users to admin/logistics status, add new user records, remove users, or block accounts permanently.</p>
@@ -694,6 +694,9 @@
             </label>
             <label>Batch / Region Code:
               <input type="text" id="isbn" placeholder="e.g., LOC-MH-411" required>
+            </label>
+            <label>Price per Unit (₹ per Quintal/Box):
+              <input type="number" id="price" min="1" value="3500" required>
             </label>
             <label>Available Quantity (Quintals / Tons):
               <input type="number" id="copies" min="1" value="10" required>
@@ -762,51 +765,209 @@
   </div>
 
   <script>
+    // Expanded array containing precisely 200 agricultural listings with realistic market pricing
     const books = [
-      {
-        id: '1a',
-        title: 'Organic Basmati Rice',
-        author: 'Punjab Farmers FPO',
-        genre: 'Grains',
-        isbn: 'LOC-PB-101',
-        copies: 50,
-        available: 50,
-        issued: 0,
-        description: 'Directly sourced aged premium Basmati rice. Zero middleman markup, fully traceable origin from Punjab.'
-      },
-      {
-        id: '2b',
-        title: 'Alphonso Mangoes (Box)',
-        author: 'Konkan Agro Producers',
-        genre: 'Fruits',
-        isbn: 'LOC-MH-202',
-        copies: 30,
-        available: 30,
-        issued: 0,
-        description: 'Hand-picked export quality GI-tagged Alphonso mangoes shipped straight from orchards.'
-      },
-      {
-        id: '3c',
-        title: 'Fresh Turmeric Roots',
-        author: 'Erode Organic Collective',
-        genre: 'Spices',
-        isbn: 'LOC-TN-303',
-        copies: 40,
-        available: 40,
-        issued: 0,
-        description: 'High curcumin content raw organic turmeric harvested sustainably.'
-      },
-      {
-        id: '4d',
-        title: 'Unpolished Toor Dal',
-        author: 'Vidarbha Krishi Vikas',
-        genre: 'Pulses',
-        isbn: 'LOC-MH-404',
-        copies: 25,
-        available: 25,
-        issued: 0,
-        description: 'Nutrient-rich unpolished yellow pigeon peas direct from farmer cooperatives.'
-      }
+      { id: '1', title: 'Organic Basmati Rice', author: 'Punjab Farmers FPO', genre: 'Grains', isbn: 'LOC-PB-101', price: 5200, copies: 50, available: 50, issued: 0, description: 'Directly sourced aged premium Basmati rice.' },
+      { id: '2', title: 'Alphonso Mangoes (Box)', author: 'Konkan Agro Producers', genre: 'Fruits', isbn: 'LOC-MH-202', price: 1500, copies: 30, available: 30, issued: 0, description: 'Hand-picked GI-tagged Alphonso mangoes.' },
+      { id: '3', title: 'Fresh Turmeric Roots', author: 'Erode Organic Collective', genre: 'Spices', isbn: 'LOC-TN-303', price: 6800, copies: 40, available: 40, issued: 0, description: 'High curcumin content raw organic turmeric.' },
+      { id: '4', title: 'Unpolished Toor Dal', author: 'Vidarbha Krishi Vikas', genre: 'Pulses', isbn: 'LOC-MH-404', price: 9200, copies: 25, available: 25, issued: 0, description: 'Nutrient-rich unpolished yellow pigeon peas.' },
+      { id: '5', title: 'Sharbati Wheat Grain', author: 'Malwa Kisan Samiti', genre: 'Grains', isbn: 'LOC-MP-505', price: 2750, copies: 60, available: 60, issued: 0, description: 'Golden-textured quality wheat grains.' },
+      { id: '6', title: 'Nagpur Organic Oranges', author: 'Vidarbha Citrus Growers', genre: 'Fruits', isbn: 'LOC-MH-606', price: 1800, copies: 45, available: 45, issued: 0, description: 'Juicy, farm-fresh Nagpur oranges.' },
+      { id: '7', title: 'Kashmiri Saffron (Grade A)', author: 'Pampore Farmers Guild', genre: 'Spices', isbn: 'LOC-JK-707', price: 26500, copies: 10, available: 10, issued: 0, description: 'Authentic hand-harvested Mongra saffron threads.' },
+      { id: '8', title: 'Himalayan Red Rice', author: 'Uttarakhand Organic Mission', genre: 'Grains', isbn: 'LOC-UK-808', price: 6400, copies: 20, available: 20, issued: 0, description: 'Indigenous antioxidant-rich red rice.' },
+      { id: '9', title: 'Aligarh Desi Carrots', author: 'Ganga Basin Producers', genre: 'Vegetables', isbn: 'LOC-UP-909', price: 1950, copies: 80, available: 80, issued: 0, description: 'Crunchy, naturally sweet deep red carrots.' },
+      { id: '10', title: 'Kashmir Royal Apples', author: 'Sopore Apple Growers', genre: 'Fruits', isbn: 'LOC-JK-1010', price: 4500, copies: 50, available: 50, issued: 0, description: 'Crisp, sweet, and juicy red delicious apples.' },
+      { id: '11', title: 'Indore Organic Green Peas', author: 'Malwa Veggie Collective', genre: 'Vegetables', isbn: 'LOC-MP-1111', price: 2800, copies: 35, available: 35, issued: 0, description: 'Plump, sweet green peas shelled fresh.' },
+      { id: '12', title: 'Organic Moong Dal', author: 'Rajasthan Pulse Producers', genre: 'Pulses', isbn: 'LOC-RJ-1212', price: 8400, copies: 30, available: 30, issued: 0, description: 'Cleaned, split yellow moong lentils.' },
+      { id: '13', title: 'Kolam Daily Rice', author: 'Godavari Rice Growers', genre: 'Grains', isbn: 'LOC-AP-1313', price: 4100, copies: 70, available: 70, issued: 0, description: 'Fine-grain daily use aromatic rice.' },
+      { id: '14', title: 'Nagaland King Chilli', author: 'Naga Farmer Network', genre: 'Spices', isbn: 'LOC-NL-1414', price: 12000, copies: 15, available: 15, issued: 0, description: 'World-famous smoky heat bhut jolokia.' },
+      { id: '15', title: 'Nashik Red Onions', author: 'Sahyadri Onion Producers', genre: 'Vegetables', isbn: 'LOC-MH-1515', price: 2400, copies: 100, available: 100, issued: 0, description: 'Pungent export-grade red onions.' },
+      { id: '16', title: 'Kinnaur Apples', author: 'Himachal Orchardists', genre: 'Fruits', isbn: 'LOC-HP-1616', price: 5100, copies: 40, available: 40, issued: 0, description: 'High altitude sweet crisp apples.' },
+      { id: '17', title: 'Black Pepper Corns', author: 'Wayanad Spice Growers', genre: 'Spices', isbn: 'LOC-KL-1717', price: 14500, copies: 25, available: 25, issued: 0, description: 'Bold Malabar black pepper corns.' },
+      { id: '18', title: 'Organic Chana Dal', author: 'MP Pulse Union', genre: 'Pulses', isbn: 'LOC-MP-1818', price: 7200, copies: 45, available: 45, issued: 0, description: 'Split split bengal gram lentils.' },
+      { id: '19', title: 'Darjeeling Green Tea Leaves', author: 'Hills Tea Producers', genre: 'Spices', isbn: 'LOC-WB-1919', price: 11000, copies: 30, available: 30, issued: 0, description: 'First flush single-origin aromatic green tea.' },
+      { id: '20', title: 'Coorg Robusta Coffee Beans', author: 'Western Ghats Planters', genre: 'Spices', isbn: 'LOC-KA-2020', price: 9800, copies: 35, available: 35, issued: 0, description: 'Shade-grown rich robusta coffee beans.' },
+      { id: '21', title: 'Karnataka Green Cardamom', author: 'Malnad Spices Cooperative', genre: 'Spices', isbn: 'LOC-KA-2121', price: 18500, copies: 12, available: 12, issued: 0, description: 'Bold green aromatic cardamom pods.' },
+      { id: '22', title: 'Malabar Clove Stems', author: 'Kerala Spice Guild', genre: 'Spices', isbn: 'LOC-KL-2222', price: 13200, copies: 18, available: 18, issued: 0, description: 'Hand-sorted aromatic cloves.' },
+      { id: '23', title: 'Ceylon Cinnamon Quills', author: 'Southern Plantations', genre: 'Spices', isbn: 'LOC-TN-2323', price: 16000, copies: 20, available: 20, issued: 0, description: 'True soft bark cinnamon quills.' },
+      { id: '24', title: 'Whole Dry Ginger', author: 'Northeast Agri Hub', genre: 'Spices', isbn: 'LOC-ML-2424', price: 5400, copies: 50, available: 50, issued: 0, description: 'Fibrous high-oil dried ginger rhizomes.' },
+      { id: '25', title: 'Raw Coriander Seeds', author: 'Rajasthan Agro Trade', genre: 'Spices', isbn: 'LOC-RJ-2525', price: 3800, copies: 60, available: 60, issued: 0, description: 'Aromatic green-gold coriander seeds.' },
+      { id: '26', title: 'Cumin (Jeera) Seeds', author: 'Unjha Spice Farmers', genre: 'Spices', isbn: 'LOC-GJ-2626', price: 24500, copies: 22, available: 22, issued: 0, description: 'High essential oil content cumin seeds.' },
+      { id: '27', title: 'Yellow Mustard Seeds', author: 'Haryana Grain Growers', genre: 'Spices', isbn: 'LOC-HR-2727', price: 5600, copies: 55, available: 55, issued: 0, description: 'Clean bold yellow mustard seeds.' },
+      { id: '28', title: 'Black Mustard Seeds', author: 'UP Farmer Federation', genre: 'Spices', isbn: 'LOC-UP-2828', price: 5300, copies: 50, available: 50, issued: 0, description: 'Pungent small black mustard seeds.' },
+      { id: '29', title: 'Fenugreek (Methi) Seeds', author: 'Rajasthan Crop Guild', genre: 'Spices', isbn: 'LOC-RJ-2929', price: 4900, copies: 40, available: 40, issued: 0, description: 'Bitter-sweet medicinal fenugreek seeds.' },
+      { id: '30', title: 'Fennel (Saunf) Seeds', author: 'Gujarat Agro Co-op', genre: 'Spices', isbn: 'LOC-GJ-3030', price: 7800, copies: 30, available: 30, issued: 0, description: 'Sweet aromatic green fennel seeds.' },
+      { id: '31', title: 'Ajwain Carom Seeds', author: 'Central India Producers', genre: 'Spices', isbn: 'LOC-MP-3131', price: 10500, copies: 25, available: 25, issued: 0, description: 'Strong thymol-rich carom seeds.' },
+      { id: '32', title: 'Sesame (Til) White Seeds', author: 'Saurashtra Farmers', genre: 'Grains', isbn: 'LOC-GJ-3232', price: 11200, copies: 35, available: 35, issued: 0, description: 'Hull-on clean white sesame seeds.' },
+      { id: '33', title: 'Black Sesame Seeds', author: 'Odisha Tribal Growers', genre: 'Grains', isbn: 'LOC-OD-3333', price: 12500, copies: 20, available: 20, issued: 0, description: 'Rich oily black sesame seeds.' },
+      { id: '34', title: 'Peanuts (Bold Kernels)', author: 'Gujarat Oilseed Growers', genre: 'Pulses', isbn: 'LOC-GJ-3434', price: 6800, copies: 70, available: 70, issued: 0, description: 'Handpicked large runner groundnuts.' },
+      { id: '35', title: 'Soybean Yellow Grains', author: 'Malwa Oilseeds Fed', genre: 'Grains', isbn: 'LOC-MP-3535', price: 4600, copies: 90, available: 90, issued: 0, description: 'Clean high-protein yellow soybeans.' },
+      { id: '36', title: 'Pigeon Pea (Whole Arhar)', author: 'Telangana Rythu Sangam', genre: 'Pulses', isbn: 'LOC-TG-3636', price: 8900, copies: 40, available: 40, issued: 0, description: 'Whole raw red gram pulses.' },
+      { id: '37', title: 'Black Eyed Peas (Chawli)', author: 'Punjab Pulse Hub', genre: 'Pulses', isbn: 'LOC-PB-3737', price: 7400, copies: 45, available: 45, issued: 0, description: 'Clean cowpeas for daily cooking.' },
+      { id: '38', title: 'Green Gram (Whole Moong)', author: 'Haryana Farmers Union', genre: 'Pulses', isbn: 'LOC-HR-3838', price: 8100, copies: 50, available: 50, issued: 0, description: 'Unpolished whole green mung beans.' },
+      { id: '39', title: 'Black Gram (Whole Urad)', author: 'Andhra Pulse Producers', genre: 'Pulses', isbn: 'LOC-AP-3939', price: 9500, copies: 35, available: 35, issued: 0, description: 'Bold whole black urad beans.' },
+      { id: '40', title: 'Kabuli Chickpeas (Safed Chana)', author: 'MP Grain Union', genre: 'Pulses', isbn: 'LOC-MP-4040', price: 10200, copies: 60, available: 60, issued: 0, description: 'Large-caliber kabuli chana.' },
+      { id: '41', title: 'Desi Brown Chickpeas (Kala Chana)', author: 'Rajasthan Farmers', genre: 'Pulses', isbn: 'LOC-RJ-4141', price: 6500, copies: 65, available: 65, issued: 0, description: 'High fiber brown chickpeas.' },
+      { id: '42', title: 'Masoor Whole Lentils', author: 'UP Agricultural Guild', genre: 'Pulses', isbn: 'LOC-UP-4242', price: 7100, copies: 50, available: 50, issued: 0, description: 'Red whole lentils cleaned.' },
+      { id: '43', title: 'Split Masoor Dal', author: 'Bihar Crop Producers', genre: 'Pulses', isbn: 'LOC-BR-4343', price: 7600, copies: 45, available: 45, issued: 0, description: 'Quick-cooking split red lentils.' },
+      { id: '44', title: 'Horse Gram (Kulthi)', author: 'Karnataka Dryland Farmers', genre: 'Pulses', isbn: 'LOC-KA-4444', price: 5200, copies: 30, available: 30, issued: 0, description: 'Traditional nutritious horse gram.' },
+      { id: '45', title: 'Moth Beans (Matki)', author: 'Rajasthan Desert Growers', genre: 'Pulses', isbn: 'LOC-RJ-4545', price: 8300, copies: 25, available: 25, issued: 0, description: 'Drought-resistant nutritious moth beans.' },
+      { id: '46', title: 'Pearl Millet (Bajra)', author: 'Haryana Millet Mission', genre: 'Grains', isbn: 'LOC-HR-4646', price: 2500, copies: 80, available: 80, issued: 0, description: 'Nutritious whole grain bajra.' },
+      { id: '47', title: 'Sorghum (Jowar)', author: 'Maharashtra Millet Board', genre: 'Grains', isbn: 'LOC-MH-4747', price: 3100, copies: 75, available: 75, issued: 0, description: 'Gluten-free white jowar grains.' },
+      { id: '48', title: 'Finger Millet (Ragi)', author: 'Karnataka Organic Farmers', genre: 'Grains', isbn: 'LOC-KA-4848', price: 3900, copies: 60, available: 60, issued: 0, description: 'Calcium-rich whole ragi grains.' },
+      { id: '49', title: 'Foxtail Millet (Kangni)', author: 'Tamil Nadu Millet Guild', genre: 'Grains', isbn: 'LOC-TN-4949', price: 4800, copies: 40, available: 40, issued: 0, description: 'Ancient wholesome foxtail millets.' },
+      { id: '50', title: 'Barnyard Millet (Sanwa)', author: 'Uttarakhand Hill Farmers', genre: 'Grains', isbn: 'LOC-UK-5050', price: 5100, copies: 30, available: 30, issued: 0, description: 'Fasting-friendly barnyard millets.' },
+      { id: '51', title: 'Little Millet (Kutki)', author: 'Madhya Pradesh Tribals', genre: 'Grains', isbn: 'LOC-MP-5151', price: 4900, copies: 35, available: 35, issued: 0, description: 'Nutrient-dense little millet grains.' },
+      { id: '52', title: 'Kodo Millet (Kodra)', author: 'Chhattisgarh Growers', genre: 'Grains', isbn: 'LOC-CG-5252', price: 4400, copies: 35, available: 35, issued: 0, description: 'Drought-hardy kodo millets.' },
+      { id: '53', title: 'Amaranth Seeds (Rajgira)', author: 'Himalayan Farmers Co-op', genre: 'Grains', isbn: 'LOC-HP-5353', price: 8800, copies: 25, available: 25, issued: 0, description: 'High protein pseudo-cereal amaranth.' },
+      { id: '54', title: 'Buckwheat Groats (Kuttu)', author: 'Kashmir Valley Co-op', genre: 'Grains', isbn: 'LOC-JK-5454', price: 9500, copies: 20, available: 20, issued: 0, description: 'Earthy nutritious buckwheat groats.' },
+      { id: '55', title: 'Flaxseeds (Alsi)', author: 'Central India Oilseeds', genre: 'Spices', isbn: 'LOC-MP-5555', price: 6200, copies: 45, available: 45, issued: 0, description: 'Omega-3 rich raw flax seeds.' },
+      { id: '56', title: 'Sunflower Seeds', author: 'Karnataka Agro Hub', genre: 'Grains', isbn: 'LOC-KA-5656', price: 6700, copies: 40, available: 40, issued: 0, description: 'Cleaned raw edible sunflower seeds.' },
+      { id: '57', title: 'Watermelon Seeds (Magaj)', author: 'UP Crop Exchange', genre: 'Grains', isbn: 'LOC-UP-5757', price: 14000, copies: 15, available: 15, issued: 0, description: 'Desedded kernel melon seeds.' },
+      { id: '58', title: 'Muskmelon Seeds', author: 'Punjab Seed Producers', genre: 'Grains', isbn: 'LOC-PB-5858', price: 15500, copies: 12, available: 12, issued: 0, description: 'Pure dried muskmelon kernels.' },
+      { id: '59', title: 'Lotus Seeds (Makhana)', author: 'Bihar Wetland Growers', genre: 'Grains', isbn: 'LOC-BR-5959', price: 65000, copies: 18, available: 18, issued: 0, description: 'Hand-popped premium organic makhana.' },
+      { id: '60', title: 'Sweet Corn Cobs (Fresh)', author: 'Maharashtra Veg Farms', genre: 'Vegetables', isbn: 'LOC-MH-6060', price: 2100, copies: 90, available: 90, issued: 0, description: 'Juicy sweet corn cobs harvested daily.' },
+      { id: '61', title: 'Baby Corn (Unpeeled)', author: 'Karnataka Veg Collective', genre: 'Vegetables', isbn: 'LOC-KA-6161', price: 3500, copies: 50, available: 50, issued: 0, description: 'Tender baby corn ears.' },
+      { id: '62', title: 'Green Capsicum', author: 'Ooty Hill Growers', genre: 'Vegetables', isbn: 'LOC-TN-6262', price: 3200, copies: 60, available: 60, issued: 0, description: 'Crisp greenhouse green bell peppers.' },
+      { id: '63', title: 'Red Bell Peppers', author: 'Pune Greenhouse Guild', genre: 'Vegetables', isbn: 'LOC-MH-6363', price: 7500, copies: 30, available: 30, issued: 0, description: 'Sweet fleshy red capsicums.' },
+      { id: '64', title: 'Yellow Bell Peppers', author: 'Nilgiri Veg Producers', genre: 'Vegetables', isbn: 'LOC-TN-6464', price: 7800, copies: 25, available: 25, issued: 0, description: 'Vibrant yellow bell peppers.' },
+      { id: '65', title: 'Hybrid Tomatoes', author: 'Kolar Tomato Market', genre: 'Vegetables', isbn: 'LOC-KA-6565', price: 1800, copies: 120, available: 120, issued: 0, description: 'Firm vine-ripened red tomatoes.' },
+      { id: '66', title: 'Desi Country Tomatoes', author: 'Local Organic Farms', genre: 'Vegetables', isbn: 'LOC-DL-6666', price: 2400, copies: 70, available: 70, issued: 0, description: 'Tangy heirloom country tomatoes.' },
+      { id: '67', title: 'Purple Brinjal (Eggplant)', author: 'West Bengal Growers', genre: 'Vegetables', isbn: 'LOC-WB-6767', price: 2200, copies: 80, available: 80, issued: 0, description: 'Glossy tender long purple brinjals.' },
+      { id: '68', title: 'Round Green Brinjal', author: 'Gujarat Farm Produce', genre: 'Vegetables', isbn: 'LOC-GJ-6868', price: 2000, copies: 75, available: 75, issued: 0, description: 'Fresh round green eggplants.' },
+      { id: '69', title: 'Bhindi (Okra)', author: 'Haryana Veg Growers', genre: 'Vegetables', isbn: 'LOC-HR-6969', price: 3100, copies: 85, available: 85, issued: 0, description: 'Tender tender finger-green okra.' },
+      { id: '70', title: 'Bitter Gourd (Karela)', author: 'Punjab Veg Hub', genre: 'Vegetables', isbn: 'LOC-PB-7070', price: 2900, copies: 60, available: 60, issued: 0, description: 'Fresh bitter gourd for healthy diets.' },
+      { id: '71', title: 'Bottle Gourd (Lauki)', author: 'UP Alluvial Farmers', genre: 'Vegetables', isbn: 'LOC-UP-7171', price: 1500, copies: 90, available: 90, issued: 0, description: 'Soft tender long bottle gourds.' },
+      { id: '72', title: 'Ridge Gourd (Tori)', author: 'MP Veg Cooperative', genre: 'Vegetables', isbn: 'LOC-MP-7272', price: 2600, copies: 50, available: 50, issued: 0, description: 'Fresh ridge gourds.' },
+      { id: '73', title: 'Sponge Gourd (Tinda)', author: 'Rajasthan Growers', genre: 'Vegetables', isbn: 'LOC-RJ-7373', price: 2800, copies: 40, available: 40, issued: 0, description: 'Tender round apple gourds.' },
+      { id: '74', title: 'Ash Gourd (Petha)', author: 'Agra Agro Guild', genre: 'Vegetables', isbn: 'LOC-UP-7474', price: 1800, copies: 45, available: 45, issued: 0, description: 'Large white wax gourds.' },
+      { id: '75', title: 'Pumpkin (Red Kaddu)', author: 'Odisha Farm Union', genre: 'Vegetables', isbn: 'LOC-OD-7575', price: 1600, copies: 100, available: 100, issued: 0, description: 'Ripe sweet red pumpkins.' },
+      { id: '76', title: 'Cabbage (Green Heads)', author: 'Nilgiri Veg Cooperative', genre: 'Vegetables', isbn: 'LOC-TN-7676', price: 1700, copies: 90, available: 90, issued: 0, description: 'Compact crisp green cabbages.' },
+      { id: '77', title: 'Cauliflower (Snowball)', author: 'Himachal Veg Growers', genre: 'Vegetables', isbn: 'LOC-HP-7777', price: 2300, copies: 85, available: 85, issued: 0, description: 'Tight snow-white cauliflower heads.' },
+      { id: '78', title: 'Broccoli (Fresh Florets)', author: 'Ooty Organic Farms', genre: 'Vegetables', isbn: 'LOC-TN-7878', price: 6500, copies: 40, available: 40, issued: 0, description: 'Nutritious green broccoli heads.' },
+      { id: '79', title: 'Knol Khol (Thekera)', author: 'Assam Valley Produce', genre: 'Vegetables', isbn: 'LOC-AS-7979', price: 2400, copies: 35, available: 35, issued: 0, description: 'Fresh crisp turnip cabbages.' },
+      { id: '80', title: 'Radish (Muli White)', author: 'Punjab Winter Crops', genre: 'Vegetables', isbn: 'LOC-PB-8080', price: 1400, copies: 110, available: 110, issued: 0, description: 'Crisp long white radishes with greens.' },
+      { id: '81', title: 'Beetroot (Ruby Red)', author: 'Karnataka Hill Farms', genre: 'Vegetables', isbn: 'LOC-KA-8181', price: 2700, copies: 70, available: 70, issued: 0, description: 'Sweet earthy deep red beetroots.' },
+      { id: '82', title: 'Turnip (Shalgam)', author: 'Kashmir Agro Guild', genre: 'Vegetables', isbn: 'LOC-JK-8282', price: 2900, copies: 45, available: 45, issued: 0, description: 'Tender purple-top turnips.' },
+      { id: '83', title: 'Sweet Potatoes (Shakarkand)', author: 'UP Riverbank Farmers', genre: 'Vegetables', isbn: 'LOC-UP-8383', price: 3400, copies: 60, available: 60, issued: 0, description: 'Nutritious orange-flesh sweet potatoes.' },
+      { id: '84', title: 'Tapioca (Kappa)', author: 'Kerala Root Producers', genre: 'Vegetables', isbn: 'LOC-KL-8484', price: 2100, copies: 80, available: 80, issued: 0, description: 'Fresh raw tapioca tubers.' },
+      { id: '85', title: 'Colocasia Roots (Arbi)', author: 'Konkan Farmers Co-op', genre: 'Vegetables', isbn: 'LOC-MH-8585', price: 3800, copies: 50, available: 50, issued: 0, description: 'Fresh taro root tubers.' },
+      { id: '86', title: 'Elephant Foot Yam (Suran)', author: 'Bihar Root Guild', genre: 'Vegetables', isbn: 'LOC-BR-8686', price: 4200, copies: 35, available: 35, issued: 0, description: 'Cleaned organic yam tubers.' },
+      { id: '87', title: 'Drumsticks (Moringa Pods)', author: 'Tamil Nadu Farmers', genre: 'Vegetables', isbn: 'LOC-TN-8787', price: 3600, copies: 65, available: 65, issued: 0, description: 'Long tender nutrient-rich drumsticks.' },
+      { id: '88', title: 'Cluster Beans (Guar)', author: 'Rajasthan Desert Farms', genre: 'Vegetables', isbn: 'LOC-RJ-8888', price: 3300, copies: 50, available: 50, issued: 0, description: 'Fresh green cluster beans.' },
+      { id: '89', title: 'French Beans', author: 'Himachal Hill Growers', genre: 'Vegetables', isbn: 'LOC-HP-8989', price: 4900, copies: 45, available: 45, issued: 0, description: 'Crisp stringless green french beans.' },
+      { id: '90', title: 'Broad Beans (Valor)', author: 'Gujarat Winter Crops', genre: 'Vegetables', isbn: 'LOC-GJ-9090', price: 3900, copies: 40, available: 40, issued: 0, description: 'Fresh flat green valor beans.' },
+      { id: '91', title: 'Cowpea Green Pods (Chawli)', author: 'Maharashtra Veg Net', genre: 'Vegetables', isbn: 'LOC-MH-9191', price: 3100, copies: 55, available: 55, issued: 0, description: 'Fresh green long cowpea pods.' },
+      { id: '92', title: 'Spinach (Palak Leaves)', author: 'Delhi Peri-Urban Farms', genre: 'Vegetables', isbn: 'LOC-DL-9292', price: 1800, copies: 100, available: 100, issued: 0, description: 'Lush green tender spinach bunches.' },
+      { id: '93', title: 'Fenugreek Leaves (Methi)', author: 'Haryana Greens', genre: 'Vegetables', isbn: 'LOC-HR-9393', price: 2200, copies: 85, available: 85, issued: 0, description: 'Aromatic fresh green methi leaves.' },
+      { id: '94', title: 'Amaranth Leaves (Chaulai)', author: 'UP Green Growers', genre: 'Vegetables', isbn: 'LOC-UP-9494', price: 1600, copies: 70, available: 70, issued: 0, description: 'Iron-rich red and green amaranth greens.' },
+      { id: '95', title: 'Mustard Greens (Sarson)', author: 'Punjab Farm Collective', genre: 'Vegetables', isbn: 'LOC-PB-9595', price: 1900, copies: 90, available: 90, issued: 0, description: 'Traditional sarson saag leaves.' },
+      { id: '96', title: 'Curry Leaves (Kadi Patta)', author: 'Southern Spice Farms', genre: 'Spices', isbn: 'LOC-TN-9696', price: 2500, copies: 60, available: 60, issued: 0, description: 'Fresh aromatic curry leaf bundles.' },
+      { id: '97', title: 'Mint Leaves (Pudina)', author: 'UP Herb Growers', genre: 'Spices', isbn: 'LOC-UP-9797', price: 2800, copies: 75, available: 75, issued: 0, description: 'Fragrant fresh mint sprigs.' },
+      { id: '98', title: 'Coriander Leaves (Dhania)', author: 'Local Peri-Urban Farms', genre: 'Vegetables', isbn: 'LOC-DL-9898', price: 2400, copies: 110, available: 110, issued: 0, description: 'Fresh aromatic green coriander herbs.' },
+      { id: '99', title: 'Spring Onions (Scallions)', author: 'Nashik Agro Producers', genre: 'Vegetables', isbn: 'LOC-MH-9999', price: 3200, copies: 60, available: 60, issued: 0, description: 'Crisp green spring onions with bulbs.' },
+      { id: '100', title: 'Garlic Bulbs (Desi White)', author: 'Mandsaur Garlic Guild', genre: 'Spices', isbn: 'LOC-MP-1000', price: 12500, copies: 50, available: 50, issued: 0, description: 'Pungent high-allicin white garlic cloves.' },
+      // Items 101 to 200
+      { id: '101', title: 'Nagpur Organic Sweet Lime (Mosambi)', author: 'Vidarbha Citrus Co-op', genre: 'Fruits', isbn: 'LOC-MH-101', price: 2900, copies: 55, available: 55, issued: 0, description: 'Fresh juicy mosambi rich in vitamin C.' },
+      { id: '102', title: 'Mahabaleshwar Strawberries', author: 'Sahyadri Berry Growers', genre: 'Fruits', isbn: 'LOC-MH-102', price: 6000, copies: 30, available: 30, issued: 0, description: 'Sweet and tart farm-fresh red strawberries.' },
+      { id: '103', title: 'Saharanpur Litchi', author: 'Ganga Belt Orchardists', genre: 'Fruits', isbn: 'LOC-UP-103', price: 4200, copies: 40, available: 40, issued: 0, description: 'Fragrant juicy litchis packed with flavor.' },
+      { id: '104', title: 'Muzaffarpur Shahi Litchi', author: 'Bihar Fruit Producers', genre: 'Fruits', isbn: 'LOC-BR-104', price: 4500, copies: 35, available: 35, issued: 0, description: 'GI-tagged sweet Shahi litchis.' },
+      { id: '105', title: 'Allahabad Surkha Guava', author: 'Prayag Orchards', genre: 'Fruits', isbn: 'LOC-UP-105', price: 2200, copies: 60, available: 60, issued: 0, description: 'Crisp pink-flesh sweet guavas.' },
+      { id: '106', title: 'Lucknow Safeda Mangoes', author: 'Avadh Farmers Guild', genre: 'Fruits', isbn: 'LOC-UP-106', price: 3800, copies: 45, available: 45, issued: 0, description: 'Rich aromatic Dasheri mangoes.' },
+      { id: '107', title: 'Gir Kesar Mangoes', author: 'Saurashtra Mango Growers', genre: 'Fruits', isbn: 'LOC-GJ-107', price: 4800, copies: 50, available: 50, issued: 0, description: 'Saffron-hued sweet Kesar mangoes.' },
+      { id: '108', title: 'Badami Mangoes', author: 'Karnataka Fruit Hub', genre: 'Fruits', isbn: 'LOC-KA-108', price: 3500, copies: 40, available: 40, issued: 0, description: 'Juicy northern Karnataka mangoes.' },
+      { id: '109', title: 'Malihabad Langra Mangoes', author: 'Avadh Agro Co-op', genre: 'Fruits', isbn: 'LOC-UP-109', price: 3600, copies: 50, available: 50, issued: 0, description: 'Distinctively sweet Langra mangoes.' },
+      { id: '110', title: 'Chausa Mangoes', author: 'North India Orchards', genre: 'Fruits', isbn: 'LOC-PB-110', price: 3900, copies: 45, available: 45, issued: 0, description: 'Honey-sweet late-season Chausa mangoes.' },
+      { id: '111', title: 'Nashik Green Grapes', author: 'Sahyadri Vineyards', genre: 'Fruits', isbn: 'LOC-MH-111', price: 3200, copies: 70, available: 70, issued: 0, description: 'Seedless crisp green table grapes.' },
+      { id: '112', title: 'Nashik Black Sharad Grapes', author: 'Deccan Grape Growers', genre: 'Fruits', isbn: 'LOC-MH-112', price: 4800, copies: 50, available: 50, issued: 0, description: 'Sweet black crisp grapes.' },
+      { id: '113', title: 'Solapur Pomegranates (Bhagwa)', author: 'Mahagrapes Union', genre: 'Fruits', isbn: 'LOC-MH-113', price: 7500, copies: 60, available: 60, issued: 0, description: 'Ruby-red nutrient-dense soft-seed pomegranates.' },
+      { id: '114', title: 'Ooty Plums', author: 'Nilgiri Hill Orchards', genre: 'Fruits', isbn: 'LOC-TN-114', price: 5100, copies: 30, available: 30, issued: 0, description: 'Tart and sweet mountain plums.' },
+      { id: '115', title: 'Coonoor Peaches', author: 'Southern Hill Farmers', genre: 'Fruits', isbn: 'LOC-TN-115', price: 5800, copies: 25, available: 25, issued: 0, description: 'Velvety sweet fresh peaches.' },
+      { id: '116', title: 'Kodaikanal Pears', author: 'Palani Hills Producers', genre: 'Fruits', isbn: 'LOC-TN-116', price: 4600, copies: 35, available: 35, issued: 0, description: 'Crisp juicy mountain pears.' },
+      { id: '117', title: 'Kerala Robusta Bananas', author: 'Wayand Banana Growers', genre: 'Fruits', isbn: 'LOC-KL-117', price: 1800, copies: 90, available: 90, issued: 0, description: 'Naturally ripened robust green-yellow bananas.' },
+      { id: '118', title: 'Nendran Yellow Plantains', author: 'Malabar Agro Net', genre: 'Fruits', isbn: 'LOC-KL-118', price: 2500, copies: 70, available: 70, issued: 0, description: 'Traditional Kerala cooking and table plantains.' },
+      { id: '119', title: 'Yelakki Small Bananas', author: 'Karnataka Organic Orchards', genre: 'Fruits', isbn: 'LOC-KA-119', price: 2800, copies: 80, available: 80, issued: 0, description: 'Fragrant, sweet miniature dessert bananas.' },
+      { id: '120', title: 'Red Bananas (Kappa Pazham)', author: 'Southern Plantations', genre: 'Fruits', isbn: 'LOC-TN-120', price: 3400, copies: 40, available: 40, issued: 0, description: 'Exotic red-skinned sweet bananas.' },
+      { id: '121', title: 'Papaya (Red Lady)', author: 'Gujarat Agro Farms', genre: 'Fruits', isbn: 'LOC-GJ-121', price: 1500, copies: 85, available: 85, issued: 0, description: 'Sweet firm red-flesh papayas.' },
+      { id: '122', title: 'Pineapple (Queen Variety)', author: 'Tripura Organic Growers', genre: 'Fruits', isbn: 'LOC-TR-122', price: 2600, copies: 50, available: 50, issued: 0, description: 'Golden, aromatic sweet pineapples.' },
+      { id: '123', title: 'Assam Jackfruit (Raw)', author: 'Brahmaputra Farmers', genre: 'Vegetables', isbn: 'LOC-AS-123', price: 1200, copies: 60, available: 60, issued: 0, description: 'Tender raw green jackfruit for culinary use.' },
+      { id: '124', title: 'Ripe Sweet Jackfruit Bulbs', author: 'Western Ghats Guild', genre: 'Fruits', isbn: 'LOC-KA-124', price: 3100, copies: 40, available: 40, issued: 0, description: 'Honey-sweet organic jackfruit bulbs.' },
+      { id: '125', title: 'Sapota (Chikoo)', author: 'Dahanu Growers Association', genre: 'Fruits', isbn: 'LOC-MH-125', price: 2400, copies: 75, available: 75, issued: 0, description: 'Malty sweet brown sapotas.' },
+      { id: '126', title: 'Custard Apple (Sitaphal)', author: 'Deccan Dryland Farmers', genre: 'Fruits', isbn: 'LOC-AP-126', price: 4500, copies: 35, available: 35, issued: 0, description: 'Creamy sweet wild custard apples.' },
+      { id: '127', title: 'Watermelon (Sugar Baby)', author: 'Rajasthan Riverbed Farms', genre: 'Fruits', isbn: 'LOC-RJ-127', price: 1100, copies: 100, available: 100, issued: 0, description: 'Crisp, refreshing sweet watermelons.' },
+      { id: '128', title: 'Muskmelon (Kharbuja)', author: 'Punjab Farm Produce', genre: 'Fruits', isbn: 'LOC-PB-128', price: 1600, copies: 80, available: 80, issued: 0, description: 'Fragrant sweet orange-flesh muskmelons.' },
+      { id: '129', title: 'Amla (Indian Gooseberry)', author: 'UP Herbal Farmers', genre: 'Fruits', isbn: 'LOC-UP-129', price: 2100, copies: 70, available: 70, issued: 0, description: 'Vitamin-C powerhouse fresh amla.' },
+      { id: '130', title: 'Tamarind (Imli Block)', author: 'Telangana Agro Traders', genre: 'Spices', isbn: 'LOC-TG-130', price: 5200, copies: 45, available: 45, issued: 0, description: 'De-seeded aged tangy tamarind blocks.' },
+      { id: '131', title: 'Raw Green Mangoes', author: 'Local Orchard Guild', genre: 'Fruits', isbn: 'LOC-DL-131', price: 2000, copies: 60, available: 60, issued: 0, description: 'Sour raw mangoes ideal for pickles.' },
+      { id: '132', title: 'Kokum Rinds (Dry)', author: 'Konkan Forest Producers', genre: 'Spices', isbn: 'LOC-MH-132', price: 8500, copies: 25, available: 25, issued: 0, description: 'Sun-dried sour kokum rinds.' },
+      { id: '133', title: 'Dry Dates (Chuhara)', author: 'Gujarat Dryfruit Guild', genre: 'Grains', isbn: 'LOC-GJ-133', price: 11500, copies: 30, available: 30, issued: 0, description: 'Naturally sweet dried dates.' },
+      { id: '134', title: 'Black Raisins (Kishmish)', author: 'Nashik Agro Co-op', genre: 'Grains', isbn: 'LOC-MH-134', price: 13500, copies: 35, available: 35, issued: 0, description: 'Sun-dried seedless black raisins.' },
+      { id: '135', title: 'Golden Sultana Raisins', author: 'Deccan Farmers Hub', genre: 'Grains', isbn: 'LOC-MH-135', price: 14200, copies: 35, available: 35, issued: 0, description: 'Plump sweet golden raisins.' },
+      { id: '136', title: 'Cashew Kernels (W320)', author: 'Goa & Konkan Planters', genre: 'Grains', isbn: 'LOC-GA-136', price: 68000, copies: 20, available: 20, issued: 0, description: 'Premium white whole cashew nuts.' },
+      { id: '137', title: 'Almonds (Mamra Grade)', author: 'Kashmir Dryfruit Guild', genre: 'Grains', isbn: 'LOC-JK-137', price: 95000, copies: 15, available: 15, issued: 0, description: 'Nutrient-rich traditional Kashmiri almonds.' },
+      { id: '138', title: 'Walnut Kernels (Giri)', author: 'Himachal Orchardists', genre: 'Grains', isbn: 'LOC-HP-138', price: 55000, copies: 18, available: 18, issued: 0, description: 'Fresh cracked light walnut halves.' },
+      { id: '139', title: 'Chiraunji Seeds (Charoli)', author: 'Central Forest Guild', genre: 'Grains', isbn: 'LOC-MP-139', price: 120000, copies: 10, available: 10, issued: 0, description: 'Aromatic sweet charoli kernels.' },
+      { id: '140', title: 'Foxnuts (Makhana Jumbo)', author: 'Bihar Aquatic Farmers', genre: 'Grains', isbn: 'LOC-BR-140', price: 72000, copies: 25, available: 25, issued: 0, description: 'Extra-large popped lotus seeds.' },
+      { id: '141', title: 'Sabudana Sago Pearls', author: 'Salem Tapioca Processors', genre: 'Grains', isbn: 'LOC-TN-141', price: 6500, copies: 50, available: 50, issued: 0, description: 'Pure starch sago pearls for fasting.' },
+      { id: '142', title: 'Arrowroot Powder (Tikhur)', author: 'Central Tribal Co-op', genre: 'Grains', isbn: 'LOC-CG-142', price: 18000, copies: 15, available: 15, issued: 0, description: 'Digestive organic arrowroot flour.' },
+      { id: '143', title: 'Multigrain Flour Blend', author: 'Punjab Organic Millers', genre: 'Grains', isbn: 'LOC-PB-143', price: 3800, copies: 60, available: 60, issued: 0, description: 'Balanced wheat, millet, and gram flour blend.' },
+      { id: '144', title: 'Jau (Barley) Flour', author: 'Haryana Crop Guild', genre: 'Grains', isbn: 'LOC-HR-144', price: 3200, copies: 40, available: 40, issued: 0, description: 'Stone-ground cooling barley flour.' },
+      { id: '145', title: 'Makki (Corn) Flour', author: 'Punjab Grain Exchange', genre: 'Grains', isbn: 'LOC-PB-145', price: 2900, copies: 55, available: 55, issued: 0, description: 'Yellow corn meal flour.' },
+      { id: '146', title: 'Chana Besan Flour', author: 'MP Pulse Processors', genre: 'Pulses', isbn: 'LOC-MP-146', price: 7800, copies: 70, available: 70, issued: 0, description: 'Fine ground pure bengal gram flour.' },
+      { id: '147', title: 'Sattu (Roasted Gram Flour)', author: 'Bihar Traditional Millers', genre: 'Grains', isbn: 'LOC-BR-147', price: 6200, copies: 45, available: 45, issued: 0, description: 'Protein-rich traditional roasted gram sattu.' },
+      { id: '148', title: 'Brown Rice Organic', author: 'Kerala Agro Network', genre: 'Grains', isbn: 'LOC-KL-148', price: 5400, copies: 35, available: 35, issued: 0, description: 'Whole grain unpolished brown rice.' },
+      { id: '149', title: 'Matta Red Rice', author: 'Palakkad Farmers Co-op', genre: 'Grains', isbn: 'LOC-KL-149', price: 5800, copies: 40, available: 40, issued: 0, description: 'Traditional parboiled bold red rice.' },
+      { id: '150', title: 'Seeraga Samba Rice', author: 'Tamil Nadu Heritage Grains', genre: 'Grains', isbn: 'LOC-TN-150', price: 8500, copies: 30, available: 30, issued: 0, description: 'Aromatic tiny-grain traditional rice.' },
+      { id: '151', title: 'Gobindobhog Rice', author: 'West Bengal Rice Growers', genre: 'Grains', isbn: 'LOC-WB-151', price: 9200, copies: 35, available: 35, issued: 0, description: 'Fragrant sweet short-grain rice.' },
+      { id: '152', title: 'Banni Buffalo Ghee', author: 'Kutch Dairy Farmers', genre: 'Grains', isbn: 'LOC-GJ-152', price: 65000, copies: 20, available: 20, issued: 0, description: 'Traditional bilona method pure buffalo ghee.' },
+      { id: '153', title: 'Gir Cow A2 Ghee', author: 'Saurashtra Goshala Trust', genre: 'Grains', isbn: 'LOC-GJ-153', price: 95000, copies: 15, available: 15, issued: 0, description: 'Pure churned A2 cow ghee from indigenous Gir cows.' },
+      { id: '154', title: 'Wild Forest Honey', author: 'Nilgiri Tribal Collective', genre: 'Spices', isbn: 'LOC-TN-154', price: 45000, copies: 25, available: 25, issued: 0, description: 'Raw multi-floral organic wild honey.' },
+      { id: '155', title: 'Sunderbans Mangrove Honey', author: 'Bengal Honey Producers', genre: 'Spices', isbn: 'LOC-WB-155', price: 52000, copies: 20, available: 20, issued: 0, description: 'Unique nectar honey from tiger reserve forests.' },
+      { id: '156', title: 'Kashmir Acacia Honey', author: 'Pampore Apiaries', genre: 'Spices', isbn: 'LOC-JK-156', price: 48000, copies: 18, available: 18, issued: 0, description: 'Light clear sweet acacia flower honey.' },
+      { id: '157', title: 'Jaggery Cubes (Organic Gud)', author: 'Kolhapur Cane Growers', genre: 'Grains', isbn: 'LOC-MH-157', price: 4200, copies: 80, available: 80, issued: 0, description: 'Chemical-free dark organic jaggery cubes.' },
+      { id: '158', title: 'Liquid Jaggery Syrup', author: 'Southern Cane Farmers', genre: 'Grains', isbn: 'LOC-TN-158', price: 4800, copies: 50, available: 50, issued: 0, description: 'Rich natural sugarcane liquid jaggery.' },
+      { id: '159', title: 'Palm Jaggery (Karupatti)', author: 'Tamil Nadu Palm Artisans', genre: 'Grains', isbn: 'LOC-TN-159', price: 9500, copies: 30, available: 30, issued: 0, description: 'Traditional mineral-rich palmyrah palm jaggery.' },
+      { id: '160', title: 'Coconut Sugar', author: 'Coastal Kerala Producers', genre: 'Grains', isbn: 'LOC-KL-160', price: 12000, copies: 25, available: 25, issued: 0, description: 'Low glycemic organic coconut blossom sugar.' },
+      { id: '161', title: 'Cold Pressed Coconut Oil', author: 'Malabar Oil Millers', genre: 'Spices', isbn: 'LOC-KL-161', price: 22000, copies: 40, available: 40, issued: 0, description: 'Virgin wood-pressed edible coconut oil.' },
+      { id: '162', title: 'Cold Pressed Mustard Oil', author: 'Haryana Oilseeds Guild', genre: 'Spices', isbn: 'LOC-HR-162', price: 16500, copies: 50, available: 50, issued: 0, description: 'Pungent traditional kachi ghani mustard oil.' },
+      { id: '163', title: 'Cold Pressed Sesame Oil', author: 'Tamil Nadu Agro Co-op', genre: 'Spices', isbn: 'LOC-TN-163', price: 24000, copies: 35, available: 35, issued: 0, description: 'Pure wood-pressed gingelly oil.' },
+      { id: '164', title: 'Cold Pressed Groundnut Oil', author: 'Saurashtra Oil Processors', genre: 'Spices', isbn: 'LOC-GJ-164', price: 18500, copies: 45, available: 45, issued: 0, description: 'Aromatic wood-pressed peanut oil.' },
+      { id: '165', title: 'Castor Oil (Medicinal Grade)', author: 'Gujarat Agro Guild', genre: 'Spices', isbn: 'LOC-GJ-165', price: 14000, copies: 30, available: 30, issued: 0, description: 'Pure cold-pressed castor oil.' },
+      { id: '166', title: 'Dry Mint Powder (Pudina)', author: 'UP Herb Processors', genre: 'Spices', isbn: 'LOC-UP-166', price: 15000, copies: 25, available: 25, issued: 0, description: 'Dehydrated green mint leaf powder.' },
+      { id: '167', title: 'Dry Fenugreek Leaves (Kasuri Methi)', author: 'Rajasthan Spice Net', genre: 'Spices', isbn: 'LOC-RJ-167', price: 18000, copies: 30, available: 30, issued: 0, description: 'Fragrant sun-dried kasuri methi leaves.' },
+      { id: '168', title: 'Amchur Dry Mango Powder', author: 'UP Orchard Guild', genre: 'Spices', isbn: 'LOC-UP-168', price: 9500, copies: 40, available: 40, issued: 0, description: 'Tangy raw mango powder.' },
+      { id: '169', title: 'Black Salt Granules (Kala Namak)', author: 'UP Mineral Producers', genre: 'Spices', isbn: 'LOC-UP-169', price: 3500, copies: 60, available: 60, issued: 0, description: 'Authentic kiln-fired digestive black salt.' },
+      { id: '170', title: 'Rock Salt Crystals (Sendha Namak)', author: 'Himalayan Salt Traders', genre: 'Spices', isbn: 'LOC-JK-170', price: 4500, copies: 70, available: 70, issued: 0, description: 'Pure pink Himalayan rock salt.' },
+      { id: '171', title: 'White Button Mushrooms', author: 'Haryana Mushroom Farms', genre: 'Vegetables', isbn: 'LOC-HR-171', price: 8000, copies: 50, available: 50, issued: 0, description: 'Fresh clean white button mushrooms.' },
+      { id: '172', title: 'Oyster Mushrooms', author: 'Himachal Agro Labs', genre: 'Vegetables', isbn: 'LOC-HP-172', price: 12000, copies: 25, available: 25, issued: 0, description: 'Delicate textured fresh oyster mushrooms.' },
+      { id: '173', title: 'Baby Spinach Leaves', author: 'Pune Hydroponics', genre: 'Vegetables', isbn: 'LOC-MH-173', price: 6500, copies: 30, available: 30, issued: 0, description: 'Tender hydroponic baby spinach.' },
+      { id: '174', title: 'Red Lettuce Leaves', author: 'Nilgiri Hydro Farms', genre: 'Vegetables', isbn: 'LOC-TN-174', price: 9500, copies: 20, available: 20, issued: 0, description: 'Crisp salad-grade red lettuce.' },
+      { id: '175', title: 'Iceberg Lettuce', author: 'Ooty Veg Growers', genre: 'Vegetables', isbn: 'LOC-TN-175', price: 8800, copies: 25, available: 25, issued: 0, description: 'Crunchy tight iceberg lettuce heads.' },
+      { id: '176', title: 'Celery Stalks', author: 'Bangalore Peri-Urban Farms', genre: 'Vegetables', isbn: 'LOC-KA-176', price: 7500, copies: 30, available: 30, issued: 0, description: 'Fresh crisp aromatic celery stalks.' },
+      { id: '177', title: 'Parsley (Curly & Flat)', author: 'Pune Herb Guild', genre: 'Spices', isbn: 'LOC-MH-177', price: 11000, copies: 20, available: 20, issued: 0, description: 'Fresh culinary green parsley.' },
+      { id: '178', title: 'Rosemary Sprigs (Fresh)', author: 'Nilgiri Herb Growers', genre: 'Spices', isbn: 'LOC-TN-178', price: 15000, copies: 15, available: 15, issued: 0, description: 'Aromatic fresh rosemary sprigs.' },
+      { id: '179', title: 'Thyme Fresh Bunches', author: 'Southern Hill Herbs', genre: 'Spices', isbn: 'LOC-TN-179', price: 16000, copies: 15, available: 15, issued: 0, description: 'Fragrant fresh culinary thyme.' },
+      { id: '180', title: 'Lemongrass Stalks', author: 'Kerala Herbal Farms', genre: 'Spices', isbn: 'LOC-KL-180', price: 4200, copies: 45, available: 45, issued: 0, description: 'Fresh citrusy lemongrass stalks.' },
+      { id: '181', title: 'Galangal (Greater Yam/Thai Ginger)', author: 'Northeast Spice Hub', genre: 'Spices', isbn: 'LOC-AS-181', price: 13000, copies: 20, available: 20, issued: 0, description: 'Aromatic rhizome galangal.' },
+      { id: '182', title: 'Raw Bamboo Shoots', author: 'Assam Tribal Producers', genre: 'Vegetables', isbn: 'LOC-AS-182', price: 6500, copies: 30, available: 30, issued: 0, description: 'Tender fermented or fresh bamboo shoots.' },
+      { id: '183', title: 'Banana Flower (Vazhaipoo)', author: 'Tamil Nadu Growers', genre: 'Vegetables', isbn: 'LOC-TN-183', price: 3000, copies: 40, available: 40, issued: 0, description: 'Fresh edible banana blossoms.' },
+      { id: '184', title: 'Banana Stem (Vazhaithandu)', author: 'Southern Veg Net', genre: 'Vegetables', isbn: 'LOC-TN-184', price: 2200, copies: 50, available: 50, issued: 0, description: 'Fiber-rich fresh tender banana tree stems.' },
+      { id: '185', title: 'Lotus Stem (Bhekam)', author: 'Kashmir Wetland Guild', genre: 'Vegetables', isbn: 'LOC-JK-185', price: 9500, copies: 25, available: 25, issued: 0, description: 'Fresh crisp lotus root tubers.' },
+      { id: '186', title: 'Water Chestnut (Singhara Fresh)', author: 'UP Wetland Farmers', genre: 'Fruits', isbn: 'LOC-UP-186', price: 5100, copies: 35, available: 35, issued: 0, description: 'Fresh green raw water chestnuts.' },
+      { id: '187', title: 'Dry Singhara Flour', author: 'MP Grain Processors', genre: 'Grains', isbn: 'LOC-MP-187', price: 11000, copies: 30, available: 30, issued: 0, description: 'Fasting-friendly water chestnut flour.' },
+      { id: '188', title: 'Sweet Potato Flour', author: 'UP Root Guild', genre: 'Grains', isbn: 'LOC-UP-188', price: 8500, copies: 25, available: 25, issued: 0, description: 'Nutritious sweet potato starch flour.' },
+      { id: '189', title: 'Ragi Malt Powder (Sprouted)', author: 'Karnataka Millet Board', genre: 'Grains', isbn: 'LOC-KA-189', price: 6800, copies: 40, available: 40, issued: 0, description: 'Sprouted nutritious ragi health malt.' },
+      { id: '190', title: 'Barley Jau Sattu', author: 'Haryana Millers', genre: 'Grains', isbn: 'LOC-HR-190', price: 5500, copies: 35, available: 35, issued: 0, description: 'Cooling roasted barley sattu powder.' },
+      { id: '191', title: 'Organic Popcorn Kernels', author: 'Rajasthan Corn Growers', genre: 'Grains', isbn: 'LOC-RJ-191', price: 4800, copies: 50, available: 50, issued: 0, description: 'High expansion popping corn kernels.' },
+      { id: '192', title: 'Flint Red Maize', author: 'Central India Agro', genre: 'Grains', isbn: 'LOC-MP-192', price: 2600, copies: 80, available: 80, issued: 0, description: 'Quality red maize grains.' },
+      { id: '193', title: 'White Maize (Safed Makka)', author: 'Gujarat Crop Union', genre: 'Grains', isbn: 'LOC-GJ-193', price: 2800, copies: 70, available: 70, issued: 0, description: 'Clean white corn grains.' },
+      { id: '194', title: 'Canola Seeds', author: 'Punjab Oilseed Growers', genre: 'Spices', isbn: 'LOC-PB-194', price: 6100, copies: 45, available: 45, issued: 0, description: 'High oil-yield canola seeds.' },
+      { id: '195', title: 'Niger Seeds (Ramtil)', author: 'Odisha Tribal Co-op', genre: 'Spices', isbn: 'LOC-OD-195', price: 7200, copies: 30, available: 30, issued: 0, description: 'Nutritious black niger oilseeds.' },
+      { id: '196', title: 'Safflower Seeds (Kardai)', author: 'Deccan Oilseeds Fed', genre: 'Spices', isbn: 'LOC-MH-196', price: 6400, copies: 35, available: 35, issued: 0, description: 'High linoleic acid safflower seeds.' },
+      { id: '197', title: 'Pumpkin Raw Seeds', author: 'Haryana Agro Hub', genre: 'Grains', isbn: 'LOC-HR-197', price: 22000, copies: 25, available: 25, issued: 0, description: 'Cleaned raw edible green pumpkin kernels.' },
+      { id: '198', title: 'Papaya Dried Seeds', author: 'Gujarat Herb Network', genre: 'Spices', isbn: 'LOC-GJ-198', price: 18000, copies: 15, available: 15, issued: 0, description: 'Dehydrated raw medicinal papaya seeds.' },
+      { id: '199', title: 'Chikus/Sapota Dried Slices', author: 'Konkan Fruit Processors', genre: 'Fruits', isbn: 'LOC-MH-199', price: 25000, copies: 20, available: 20, issued: 0, description: 'Natural dehydrated sapota fruit chips.' },
+      { id: '200', title: 'Jackfruit Dried Chips', author: 'Kerala Snack Artisans', genre: 'Fruits', isbn: 'LOC-KL-200', price: 16000, copies: 40, available: 40, issued: 0, description: 'Crisp fried organic raw jackfruit chips.' }
     ];
 
     const defaultLibrarians = ["tanzeel@example.com", "Logistics Admin", "Supply Chain Lead"];
@@ -861,7 +1022,6 @@
       bookRequests = JSON.parse(localStorage.getItem('bookRequests')) || [];
       
       if (!localStorage.getItem('users')) {
-        // Seed default users if empty so admin directory has items
         const initialUsers = [
           { name: 'Metro Retail Mart', email: 'procurement@metroretail.com', grade: 'Buyer', role: 'student' },
           { name: 'Anita Desai', email: 'anita.consumer@gmail.com', grade: 'Consumer', role: 'student' }
@@ -931,7 +1091,6 @@
       window.location.href = "Test.html";
     }
     
-    // ADMIN USER MANAGEMENT & DIRECTORY FUNCTIONS
     function renderAdminUserDirectory() {
       const tbody = document.getElementById('admin-user-directory');
       if (!tbody) return;
@@ -1068,6 +1227,7 @@
               <h3>${book.title}</h3>
               <div><strong>Farmer/FPO:</strong> ${book.author}</div>
               <div><strong>Category:</strong> ${book.genre}</div>
+              <div><strong>Price:</strong> <span style="color:var(--accent-light);">₹${book.price}</span></div>
               <div><strong>Status:</strong> <span class="${statusClass}">${statusText}</span></div>
               <div><strong>Available Stock:</strong> ${book.available} units</div>
             </div>
@@ -1084,7 +1244,7 @@
     function showBookDetails(bookId) {
       const book = books.find(b => b.id === bookId);
       if (!book) return;
-      alert(`Crop Supply Details:\n\nProduce: ${book.title}\nProducer: ${book.author}\nCategory: ${book.genre}\nBatch/Region Code: ${book.isbn}\nAvailable Stock: ${book.available} units\n\nDescription: ${book.description}`);
+      alert(`Crop Supply Details:\n\nProduce: ${book.title}\nProducer: ${book.author}\nCategory: ${book.genre}\nBatch/Region Code: ${book.isbn}\nPrice: ₹${book.price}\nAvailable Stock: ${book.available} units\n\nDescription: ${book.description}`);
     }
     
     function issueBook(bookId) {
@@ -1103,6 +1263,7 @@
       currentUser.books.push({
         id: book.id,
         title: book.title,
+        price: book.price,
         issueDate: new Date().toISOString().split('T')[0],
         dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
         returned: false
@@ -1116,7 +1277,7 @@
       }
       
       updateStatistics();
-      showNotification(`Direct order placed successfully for "${book.title}"!`);
+      showNotification(`Direct order placed successfully for "${book.title}" (₹${book.price})!`);
       
       if (currentUser.email) {
         emailjs.send("service_598ru0p", "template_mmm8fwm", {
@@ -1142,7 +1303,7 @@
       currentUser.books.forEach(book => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${book.title}</td>
+          <td>${book.title} ${book.price ? `<br><small style="color:var(--accent-light);">₹${book.price}</small>` : ''}</td>
           <td>${book.issueDate}</td>
           <td>${book.dueDate}</td>
           <td class="status-available">Dispatched / Confirmed</td>
@@ -1235,11 +1396,12 @@
       localStorage.setItem('bookRequests', JSON.stringify(bookRequests));
       
       books.push({
-        id: 'b' + (books.length + 1),
+        id: String(books.length + 1),
         title: request.bookTitle,
         author: request.studentName,
         genre: 'Grains',
         isbn: 'LOC-AI-' + Math.floor(Math.random() * 1000),
+        price: 3200,
         copies: 10,
         available: 10,
         issued: 0,
@@ -1267,11 +1429,12 @@
       const author = document.getElementById('author').value;
       const genre = document.getElementById('genre').value;
       const isbn = document.getElementById('isbn').value;
+      const price = parseFloat(document.getElementById('price').value);
       const copies = parseInt(document.getElementById('copies').value);
       
       books.push({
-        id: 'b' + (books.length + 1),
-        title, author, genre, isbn,
+        id: String(books.length + 1),
+        title, author, genre, isbn, price,
         copies: copies,
         available: copies,
         issued: 0,
