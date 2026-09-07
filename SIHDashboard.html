@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Farmers2u - Direct Agri-Market Portal</title>
+  <link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("DDNX9h1g5vtcDxP27");
+    })();
+  </script>
+  <style>
+    :root {
+      --primary: #1b3017;
+      --secondary: #2d4a27;
+      --accent: #4caf50;
+      --accent-light: #81c784;
+      --text-dark: #f4f4f4;
+      --text-light: #ffffff;
+      --muted-text: #aaaaaa;
+      --success: #4CAF50;
+      --warning: #FF9800;
+      --danger: #F44336;
+      --card-bg: rgba(27, 48, 23, 0.9);
+      --librarian-bg: rgba(76, 175, 80, 0.2);
+      --student-bg: rgba(66, 133, 244, 0.2);
+    }
+    
+    * {
+      font-family: 'Minecraftia', 'Press Start 2P', monospace, sans-serif !important;
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      background: linear-gradient(135deg, #11220e, #1b3017);
+      color: var(--text-dark);
+      min-height: 100vh;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background: rgba(17, 34, 14, 0.95);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      z-index: 1000;
+      border-bottom: 2px solid var(--accent);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo i {
+      font-size: 2.2rem;
+      color: var(--accent-light);
+      text-shadow: 0 0 10px rgba(129, 199, 132, 0.5);
+    }
+    
+    .logo h1 {
+      font-size: 1.4rem;
+      text-shadow: 2px 2px 3px rgba(0,0,0,0.5);
+      color: var(--text-light);
+    }
+    
+    .access-badge {
+      padding: 8px 15px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    
+    .librarian-badge {
+      background: var(--librarian-bg);
+      border: 1px solid var(--success);
+      color: var(--success);
+    }
+    
+    .student-badge {
+      background: var(--student-bg);
+      border: 1px solid #4285F4;
+      color: #4285F4;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-name {
+      font-size: 0.9rem;
+      color: var(--text-light);
+    }
+    
+    .logout-btn {
+      background: rgba(244, 67, 54, 0.2);
+      color: #ff6b6b;
+      border: 1px solid var(--danger);
+      border-radius: 8px;
+      padding: 8px 15px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+    }
+    
+    .logout-btn:hover {
+      background: rgba(244, 67, 54, 0.3);
+      transform: scale(1.05);
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 90px auto 30px;
+      padding: 0 20px;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background: rgba(45, 74, 39, 0.6);
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(76, 175, 80, 0.2);
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+      background: rgba(76, 175, 80, 0.3);
+    }
+    
+    .stat-value {
+      font-size: 2rem;
+      font-weight: bold;
+      margin: 10px 0;
+      transition: all 0.5s ease;
+    }
+    
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--muted-text);
+    }
+    
+    .stat-icon {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: var(--accent-light);
+    }
+    
+    .section-nav {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .nav-btn {
+      padding: 12px 20px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+      background: rgba(45, 74, 39, 0.8);
+      border: none;
+      color: var(--text-light);
+      cursor: pointer;
+    }
+    
+    .nav-btn.active {
+      background: var(--accent);
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.5);
+    }
+    
+    .search-bar {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    
+    .search-bar input, .search-bar select {
+      flex: 1;
+      margin-top: 0;
+      min-width: 200px;
+      padding: 12px;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.95);
+      font-size: 0.9rem;
+      color: #222;
+    }
+    
+    .dashboard {
+      position: relative;
+      min-height: 500px;
+    }
+    
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      color: var(--text-light);
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+      transition: all 0.4s ease;
+      border: 1px solid rgba(76, 175, 80, 0.3);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      opacity: 0;
+      transform: translateY(20px);
+      pointer-events: none;
+    }
+    
+    .card.active {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+    
+    .card h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      font-size: 1.2rem;
+    }
+    
+    .book-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      max-height: 600px;
+      overflow-y: auto;
+      padding: 10px;
+    }
+    
+    .book-cover {
+      width: 80px;
+      height: 120px;
+      background: linear-gradient(135deg, #2d4a27, #4caf50);
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      text-align: center;
+      padding: 5px;
+      box-sizing: border-box;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      overflow: hidden;
+      color: #fff;
+    }
+    
+    .book-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 10px;
+      padding: 15px;
+      transition: all 0.3s ease;
+      position: relative;
+      border: 1px solid rgba(76, 175, 80, 0.2);
+    }
+    
+    .book-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+    }
+    
+    .book-card-header {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    
+    .book-card-content h3 {
+      text-align: left;
+      margin-top: 0;
+      margin-bottom: 10px;
+      color: var(--text-light);
+      font-size: 1rem;
+    }
+    
+    .book-card-content div {
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+    
+    .book-card-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    button {
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+      color: var(--text-light);
+      padding: 10px 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    
+    button:hover {
+      opacity: 0.9;
+      transform: scale(1.02);
+      box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+    }
+    
+    button.primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+    }
+    
+    button.danger {
+      background: linear-gradient(135deg, var(--danger) 0%, #e53935 100%);
+    }
+    
+    button.success {
+      background: linear-gradient(135deg, var(--success) 0%, #66BB6A 100%);
+    }
+    
+    .action-btn {
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      min-width: 80px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      color: var(--text-light);
+      margin: 20px 0;
+      font-size: 0.85rem;
+    }
+    
+    th, td {
+      padding: 12px 10px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: left;
+    }
+    
+    th {
+      background-color: var(--secondary);
+      font-weight: bold;
+    }
+    
+    tr:nth-child(even) {
+      background-color: rgba(45, 74, 39, 0.3);
+    }
+    
+    label, input, select, textarea {
+      display: block;
+      width: 100%;
+      margin-top: 15px;
+      font-size: 0.85rem;
+    }
+    
+    input, select, textarea {
+      padding: 12px;
+      border: 2px solid var(--accent);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.95);
+      color: #222;
+    }
+    
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent-light);
+      outline: none;
+      box-shadow: 0 0 8px var(--accent);
+    }
+    
+    .status-available { color: var(--success); font-weight: bold; }
+    .status-issued { color: var(--warning); font-weight: bold; }
+    .status-pending { color: var(--warning); font-weight: bold; }
+    .status-approved { color: var(--success); font-weight: bold; }
+    .status-rejected { color: var(--danger); font-weight: bold; }
+    
+    .admin-section {
+      background: rgba(76, 175, 80, 0.1);
+      border: 1px solid var(--success);
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+    
+    .admin-section h3, .student-management h3 {
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+    
+    .student-management {
+      margin-top: 30px;
+      background: rgba(66, 133, 244, 0.1);
+      border: 1px solid #4285F4;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    
+    .student-management h3 { color: #4285F4; }
+    
+    .student-form {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+    
+    .student-form input { flex: 1; min-width: 180px; }
+    
+    .system-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      z-index: 2000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transform: translateX(150%);
+      transition: transform 0.4s ease;
+      font-size: 0.85rem;
+    }
+    
+    .system-notification.show { transform: translateX(0); }
+    
+    .access-denied {
+      background: var(--danger);
+      padding: 15px;
+      border-radius: 8px;
+      text-align: center;
+      margin: 20px 0;
+      display: none;
+      font-size: 0.85rem;
+    }
+    
+    .dropdown { position: relative; display: inline-block; }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: var(--card-bg);
+      min-width: 220px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.5);
+      z-index: 1;
+      border-radius: 8px;
+      padding: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .dropdown:hover .dropdown-content { display: block; }
+    .dropdown-item {
+      padding: 8px 12px;
+      display: block;
+      border-radius: 5px;
+      margin-bottom: 5px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 0.8rem;
+    }
+    
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .pulse { animation: pulse 0.5s ease; }
+    
+    @media (max-width: 768px) {
+      .header { flex-wrap: wrap; gap: 10px; }
+      .logo h1 { font-size: 1.1rem; }
+      .book-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">
+      <i class="fas fa-tractor"></i>
+      <h1>Farmers2u Portal</h1>
+    </div>
+    
+    <div class="access-badge" id="access-badge">
+      <i class="fas fa-shield-alt"></i>
+      <span id="access-text">Access Level</span>
+    </div>
+    
+    <div class="user-info">
+      <div class="user-name" id="user-name">Guest</div>
+      <button class="logout-btn" onclick="logout()">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </button>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-seedling"></i></div>
+        <div class="stat-value" id="total-books">10</div>
+        <div class="stat-label">Active Crop Listings</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-boxes"></i></div>
+        <div class="stat-value" id="available-books">10</div>
+        <div class="stat-label">Ready for Direct Trade</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon"><i class="fas fa-handshake"></i></div>
+        <div class="stat-value" id="active-students">4</div>
+        <div class="stat-label">Connected Buyers/FPOs</div>
+      </div>
+    </div>
+    
+    <div class="section-nav">
+      <button class="nav-btn active" data-section="books">
+        <i class="fas fa-store"></i> Direct Marketplace
+      </button>
+      <button class="nav-btn" data-section="students">
+        <i class="fas fa-shopping-cart"></i> My Orders & Demand
+      </button>
+      <button class="nav-btn" data-section="librarian" id="librarian-btn">
+        <i class="fas fa-chart-line"></i> Supply Chain & AI Admin
+      </button>
+    </div>
+    
+    <div class="access-denied" id="access-denied">
+      <i class="fas fa-exclamation-triangle"></i> 
+      <strong>Access Restricted!</strong> You require Admin or Logistics privileges to view this section.
+    </div>
+    
+    <div class="search-bar">
+      <input type="text" id="search-input" placeholder="Search crops, produce, or region..." oninput="filterBooks()">
+      <select id="genre-filter" onchange="filterBooks()">
+        <option value="">All Categories</option>
+        <option value="Grains">Grains & Cereals</option>
+        <option value="Vegetables">Fresh Vegetables</option>
+        <option value="Fruits">Orchard Fruits</option>
+        <option value="Pulses">Pulses & Legumes</option>
+        <option value="Spices">Spices & Cash Crops</option>
+      </select>
+      <button class="primary" onclick="filterBooks()"><i class="fas fa-search"></i> Search</button>
+      <button onclick="resetSearch()"><i class="fas fa-sync"></i> Reset</button>
+    </div>
+    
+    <div class="dashboard">
+      <!-- Marketplace Catalogue Section -->
+      <div class="card active" id="books-section">
+        <h2><i class="fas fa-store"></i> Farmer-to-Consumer Direct Marketplace</h2>
+        <div class="book-grid" id="book-grid"></div>
+      </div>
+      
+      <!-- Buyer / Consumer Orders Portal -->
+      <div class="card" id="students-section">
+        <h2><i class="fas fa-shopping-cart"></i> Direct Buyer & Consumer Orders</h2>
+        <div>
+          <h3>My Active Direct Orders</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Crop / Produce</th>
+                <th>Order Date</th>
+                <th>Delivery Due</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="student-books"></tbody>
+          </table>
+          
+          <h3 style="margin-top: 30px;">Request Bulk Requirement / Pre-Harvest Booking</h3>
+          <form id="book-request-form" onsubmit="requestBook(event)">
+            <label>Crop / Produce Name:
+              <input type="text" id="request-title" placeholder="e.g., Organic Basmati Rice" required>
+            </label>
+            <label>Estimated Quantity / Requirements:
+              <input type="text" id="request-author" placeholder="e.g., 500 Quintals" required>
+            </label>
+            <label>Target Price & Delivery Location:
+              <textarea id="request-reason" rows="3" placeholder="Specify target budget and destination..." required></textarea>
+            </label>
+            <button type="submit" class="primary"><i class="fas fa-paper-plane"></i> Broadcast Demand to FPOs</button>
+          </form>
+        </div>
+      </div>
+      
+      <!-- Supply Chain & Logistics Admin Tools -->
+      <div class="card" id="librarian-section">
+        <h2><i class="fas fa-chart-line"></i> Supply Chain & Logistics Management</h2>
+        <div>
+          <!-- ADMIN USER MANAGEMENT PANEL (Requested Feature) -->
+          <div class="admin-section" style="border-color: #4285F4; background: rgba(66, 133, 244, 0.08);">
+            <h3 style="color: #4285F4;"><i class="fas fa-users-cog"></i> Master User Management & Audit Log</h3>
+            <p style="font-size:0.8rem; margin-bottom:15px; color:#ccc;">View all registered users, promote users to admin/logistics status, add new user records, remove users, or block accounts permanently.</p>
+            
+            <div style="margin-bottom: 20px;">
+              <h4 style="font-size:0.85rem; margin-bottom:10px; color:#81c784;">Registered Users & Emails Directory</h4>
+              <div style="max-height: 220px; overflow-y: auto;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Email Address</th>
+                      <th>Role / Grade</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-user-directory"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">
+              <input type="text" id="new-admin-email-input" placeholder="Enter user email to promote to Admin" style="flex:1; min-width:200px; margin-top:0;">
+              <button class="primary" onclick="promoteToAdminByEmail()"><i class="fas fa-user-shield"></i> Make Admin</button>
+            </div>
+            
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+              <input type="email" id="quick-add-email" placeholder="New User Email" style="flex:1; margin-top:0;">
+              <input type="text" id="quick-add-name" placeholder="New User Name" style="flex:1; margin-top:0;">
+              <button class="success" onclick="adminAddNewUser()"><i class="fas fa-user-plus"></i> Add User</button>
+            </div>
+          </div>
+
+          <h3>List New Crop Harvest (Farmer / FPO Portal)</h3>
+          <form id="add-book-form" onsubmit="addBook(event)">
+            <label>Crop / Produce Title:
+              <input type="text" id="book-title" placeholder="e.g., Fresh Alphonso Mangoes" required>
+            </label>
+            <label>FPO / Farmer Name:
+              <input type="text" id="author" placeholder="e.g., Konkan Growers FPO" required>
+            </label>
+            <label>Category:
+              <select id="genre" required>
+                <option value="Grains">Grains & Cereals</option>
+                <option value="Vegetables">Fresh Vegetables</option>
+                <option value="Fruits">Orchard Fruits</option>
+                <option value="Pulses">Pulses & Legumes</option>
+                <option value="Spices">Spices & Cash Crops</option>
+              </select>
+            </label>
+            <label>Batch / Region Code:
+              <input type="text" id="isbn" placeholder="e.g., LOC-MH-411" required>
+            </label>
+            <label>Available Quantity (Quintals / Tons):
+              <input type="number" id="copies" min="1" value="10" required>
+            </label>
+            <button type="submit" class="success"><i class="fas fa-plus"></i> Publish Direct Listing</button>
+          </form>
+          
+          <div class="admin-section" id="admin-section">
+            <h3><i class="fas fa-user-shield"></i> Logistics Partner Administration</h3>
+            <form id="add-admin-form" onsubmit="addAdmin(event)">
+              <label>Logistics Partner / Hub Coordinator Name:
+                <input type="text" id="admin-name" placeholder="Enter coordinator name" required>
+              </label>
+              <button type="submit" class="primary"><i class="fas fa-user-plus"></i> Grant Logistics Access</button>
+            </form>
+            
+            <h3 style="margin-top: 20px;">Active Logistics Partners</h3>
+            <div class="dropdown">
+              <button class="action-btn"><i class="fas fa-list"></i> View Coordinators</button>
+              <div class="dropdown-content" id="librarian-dropdown"></div>
+            </div>
+          </div>
+          
+          <div class="student-management" id="student-management">
+            <h3><i class="fas fa-users"></i> Registered Stakeholders Network</h3>
+            <div class="student-form">
+              <input type="text" id="student-name" placeholder="Stakeholder / Buyer Name" required>
+              <input type="email" id="student-email" placeholder="Contact Email" required>
+              <select id="student-grade" required>
+                <option value="">Select Stakeholder Type</option>
+                <option value="Farmer">Farmer / Producer</option>
+                <option value="FPO">FPO Representative</option>
+                <option value="Buyer">Bulk Buyer / Retailer</option>
+                <option value="Consumer">Direct Consumer</option>
+              </select>
+              <button class="success" onclick="addStudent()"><i class="fas fa-user-plus"></i> Register User</button>
+            </div>
+            
+            <h3 style="margin-top: 20px;">Network Directory</h3>
+            <div class="dropdown">
+              <button class="action-btn"><i class="fas fa-list"></i> View Network</button>
+              <div class="dropdown-content" id="student-dropdown"></div>
+            </div>
+          </div>
+          
+          <h3 style="margin-top: 30px;">AI Demand Forecast & Incoming Bulk Bookings</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Buyer / Requester</th>
+                <th>Crop Requirement</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="book-requests"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="system-notification" id="system-notification">
+    <i class="fas fa-check-circle"></i> <span id="notification-text">Operation successful!</span>
+  </div>
+
+  <script>
+    const books = [
+      {
+        id: '1a',
+        title: 'Organic Basmati Rice',
+        author: 'Punjab Farmers FPO',
+        genre: 'Grains',
+        isbn: 'LOC-PB-101',
+        copies: 50,
+        available: 50,
+        issued: 0,
+        description: 'Directly sourced aged premium Basmati rice. Zero middleman markup, fully traceable origin from Punjab.'
+      },
+      {
+        id: '2b',
+        title: 'Alphonso Mangoes (Box)',
+        author: 'Konkan Agro Producers',
+        genre: 'Fruits',
+        isbn: 'LOC-MH-202',
+        copies: 30,
+        available: 30,
+        issued: 0,
+        description: 'Hand-picked export quality GI-tagged Alphonso mangoes shipped straight from orchards.'
+      },
+      {
+        id: '3c',
+        title: 'Fresh Turmeric Roots',
+        author: 'Erode Organic Collective',
+        genre: 'Spices',
+        isbn: 'LOC-TN-303',
+        copies: 40,
+        available: 40,
+        issued: 0,
+        description: 'High curcumin content raw organic turmeric harvested sustainably.'
+      },
+      {
+        id: '4d',
+        title: 'Unpolished Toor Dal',
+        author: 'Vidarbha Krishi Vikas',
+        genre: 'Pulses',
+        isbn: 'LOC-MH-404',
+        copies: 25,
+        available: 25,
+        issued: 0,
+        description: 'Nutrient-rich unpolished yellow pigeon peas direct from farmer cooperatives.'
+      }
+    ];
+
+    const defaultLibrarians = ["tanzeel@example.com", "Logistics Admin", "Supply Chain Lead"];
+    let librarians = [];
+    let bookRequests = [];
+    let students = [
+      { id: 's1', name: 'Metro Retail Mart', grade: 'Buyer', email: 'procurement@metroretail.com' },
+      { id: 's2', name: 'FreshGrocer Chains', grade: 'Buyer', email: 'orders@freshgrocer.in' },
+      { id: 's3', name: 'Anita Desai', grade: 'Consumer', email: 'anita.consumer@gmail.com' }
+    ];
+    let currentUser = null;
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const storedUser = localStorage.getItem('currentUser');
+      if (!storedUser) {
+        alert('Please log in first to access Farmers2u.');
+        window.location.href = "Test.html";
+        return;
+      }
+      
+      currentUser = JSON.parse(storedUser);
+      initializeStorage();
+      
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          if (this.dataset.section === 'librarian' && currentUser.role !== 'librarian' && currentUser.role !== 'admin') {
+            document.getElementById('access-denied').style.display = 'block';
+            return;
+          }
+          document.getElementById('access-denied').style.display = 'none';
+          showSection(this.dataset.section);
+          if (this.dataset.section === 'librarian') {
+            renderBookRequests();
+            renderAdminUserDirectory();
+          }
+        });
+      });
+      
+      showDashboard();
+      updateStatistics();
+    });
+    
+    function initializeStorage() {
+      if (!localStorage.getItem('librarians')) {
+        localStorage.setItem('librarians', JSON.stringify(defaultLibrarians));
+      }
+      librarians = JSON.parse(localStorage.getItem('librarians')) || [];
+      
+      if (!localStorage.getItem('bookRequests')) {
+        localStorage.setItem('bookRequests', JSON.stringify([]));
+      }
+      bookRequests = JSON.parse(localStorage.getItem('bookRequests')) || [];
+      
+      if (!localStorage.getItem('users')) {
+        // Seed default users if empty so admin directory has items
+        const initialUsers = [
+          { name: 'Metro Retail Mart', email: 'procurement@metroretail.com', grade: 'Buyer', role: 'student' },
+          { name: 'Anita Desai', email: 'anita.consumer@gmail.com', grade: 'Consumer', role: 'student' }
+        ];
+        localStorage.setItem('users', JSON.stringify(initialUsers));
+      }
+      
+      if (!localStorage.getItem('blockedEmails')) {
+        localStorage.setItem('blockedEmails', JSON.stringify([]));
+      }
+      
+      if (!localStorage.getItem('students')) {
+        localStorage.setItem('students', JSON.stringify(students));
+      }
+      students = JSON.parse(localStorage.getItem('students')) || [];
+    }
+    
+    function updateStatistics() {
+      const totalBooks = books.length;
+      const availableBooks = books.reduce((total, book) => total + book.available, 0);
+      const activeStudents = students.length;
+      
+      document.getElementById('total-books').textContent = totalBooks;
+      document.getElementById('available-books').textContent = availableBooks;
+      document.getElementById('active-students').textContent = activeStudents;
+    }
+    
+    function showDashboard() {
+      document.getElementById('user-name').textContent = currentUser.name;
+      const accessBadge = document.getElementById('access-badge');
+      const accessText = document.getElementById('access-text');
+      
+      if (currentUser.role === 'librarian' || currentUser.role === 'admin') {
+        accessBadge.className = 'access-badge librarian-badge';
+        accessText.textContent = 'Admin / Logistics Access';
+      } else {
+        accessBadge.className = 'access-badge student-badge';
+        accessText.textContent = 'Stakeholder / Buyer Access';
+        document.getElementById('librarian-btn').style.display = 'none';
+      }
+      
+      renderBooks();
+      renderStudentBooks();
+      renderBookRequests();
+      renderLibrarianList();
+      renderStudents();
+      renderAdminUserDirectory();
+    }
+    
+    function showSection(section) {
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.section === section) {
+          btn.classList.add('active');
+        }
+      });
+      
+      document.querySelectorAll('.card').forEach(card => {
+        card.classList.remove('active');
+      });
+      
+      document.getElementById(`${section}-section`).classList.add('active');
+    }
+    
+    function logout() {
+      localStorage.removeItem('currentUser');
+      window.location.href = "Test.html";
+    }
+    
+    // ADMIN USER MANAGEMENT & DIRECTORY FUNCTIONS
+    function renderAdminUserDirectory() {
+      const tbody = document.getElementById('admin-user-directory');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const blockedEmails = JSON.parse(localStorage.getItem('blockedEmails')) || [];
+      const librariansList = JSON.parse(localStorage.getItem('librarians')) || [];
+      
+      if (users.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;">No registered users found.</td></tr>';
+        return;
+      }
+      
+      users.forEach((user, index) => {
+        const isBlocked = blockedEmails.includes(user.email.toLowerCase());
+        const isAdmin = librariansList.includes(user.email.toLowerCase()) || user.role === 'admin';
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${isAdmin ? '<span class="status-available">Admin / Logistics</span>' : (user.grade || 'Stakeholder')} ${isBlocked ? '<span style="color:var(--danger);">(Blocked)</span>' : ''}</td>
+          <td>
+            ${!isAdmin ? `<button class="action-btn primary" onclick="makeUserAdmin('${user.email}')"><i class="fas fa-shield-alt"></i> Make Admin</button>` : ''}
+            <button class="action-btn danger" onclick="deleteUser('${user.email}')"><i class="fas fa-trash"></i> Delete</button>
+            ${!isBlocked ? `<button class="action-btn" style="background:#555;" onclick="blockUser('${user.email}')"><i class="fas fa-ban"></i> Block</button>` : `<button class="action-btn success" onclick="unblockUser('${user.email}')"><i class="fas fa-unlock"></i> Unblock</button>`}
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+    
+    function promoteToAdminByEmail() {
+      const emailInput = document.getElementById('new-admin-email-input').value.trim().toLowerCase();
+      if (!emailInput) {
+        showNotification('Please enter a valid user email.', 'error');
+        return;
+      }
+      makeUserAdmin(emailInput);
+      document.getElementById('new-admin-email-input').value = '';
+    }
+    
+    function makeUserAdmin(email) {
+      let librariansList = JSON.parse(localStorage.getItem('librarians')) || [];
+      if (!librariansList.includes(email.toLowerCase())) {
+        librariansList.push(email.toLowerCase());
+        localStorage.setItem('librarians', JSON.stringify(librariansList));
+      }
+      
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const u = users.find(x => x.email.toLowerCase() === email.toLowerCase());
+      if (u) {
+        u.role = 'librarian';
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+      
+      showNotification(`Successfully granted Admin & Logistics privileges to ${email}`);
+      renderAdminUserDirectory();
+      renderLibrarianList();
+    }
+    
+    function deleteUser(email) {
+      if (!confirm(`Are you sure you want to delete user ${email}?`)) return;
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      users = users.filter(u => u.email.toLowerCase() !== email.toLowerCase());
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      showNotification(`User ${email} removed from user base.`);
+      renderAdminUserDirectory();
+    }
+    
+    function blockUser(email) {
+      if (!confirm(`Are you sure you want to block ${email} forever? They will not be able to log in or register again.`)) return;
+      let blockedEmails = JSON.parse(localStorage.getItem('blockedEmails')) || [];
+      if (!blockedEmails.includes(email.toLowerCase())) {
+        blockedEmails.push(email.toLowerCase());
+        localStorage.setItem('blockedEmails', JSON.stringify(blockedEmails));
+      }
+      showNotification(`User ${email} has been blocked forever.`);
+      renderAdminUserDirectory();
+    }
+    
+    function unblockUser(email) {
+      let blockedEmails = JSON.parse(localStorage.getItem('blockedEmails')) || [];
+      blockedEmails = blockedEmails.filter(e => e !== email.toLowerCase());
+      localStorage.setItem('blockedEmails', JSON.stringify(blockedEmails));
+      showNotification(`User ${email} unblocked.`);
+      renderAdminUserDirectory();
+    }
+    
+    function adminAddNewUser() {
+      const email = document.getElementById('quick-add-email').value.trim().toLowerCase();
+      const name = document.getElementById('quick-add-name').value.trim();
+      if (!email || !name) {
+        showNotification('Provide both email and name to add user.', 'error');
+        return;
+      }
+      
+      let users = JSON.parse(localStorage.getItem('users')) || [];
+      if (users.some(u => u.email.toLowerCase() === email)) {
+        showNotification('User with this email already exists.', 'error');
+        return;
+      }
+      
+      users.push({ name, email, password: 'defaultpassword123', grade: 'Buyer', role: 'student' });
+      localStorage.setItem('users', JSON.stringify(users));
+      
+      document.getElementById('quick-add-email').value = '';
+      document.getElementById('quick-add-name').value = '';
+      showNotification(`New user ${name} (${email}) added successfully!`);
+      renderAdminUserDirectory();
+    }
+
+    function renderBooks(filteredBooks = books) {
+      const bookGrid = document.getElementById('book-grid');
+      bookGrid.innerHTML = '';
+      
+      if (filteredBooks.length === 0) {
+        bookGrid.innerHTML = '<p style="text-align:center; grid-column:1/-1;">No crop listings found matching your search.</p>';
+        return;
+      }
+      
+      filteredBooks.forEach(book => {
+        const statusClass = book.available > 0 ? 'status-available' : 'status-issued';
+        const statusText = book.available > 0 ? 'In Stock (Ready)' : 'Sold Out';
+        
+        const bookCard = document.createElement('div');
+        bookCard.className = 'book-card';
+        bookCard.innerHTML = `
+          <div class="book-card-header">
+            <div class="book-cover">${book.title.substring(0, 12)}</div>
+            <div class="book-card-content">
+              <h3>${book.title}</h3>
+              <div><strong>Farmer/FPO:</strong> ${book.author}</div>
+              <div><strong>Category:</strong> ${book.genre}</div>
+              <div><strong>Status:</strong> <span class="${statusClass}">${statusText}</span></div>
+              <div><strong>Available Stock:</strong> ${book.available} units</div>
+            </div>
+          </div>
+          <div class="book-card-footer">
+            <button class="action-btn" onclick="showBookDetails('${book.id}')"><i class="fas fa-info-circle"></i> Info</button>
+            <button class="action-btn primary" ${book.available <= 0 ? 'disabled style="opacity:0.6;"' : ''} onclick="issueBook('${book.id}')"><i class="fas fa-shopping-cart"></i> Book Order</button>
+          </div>
+        `;
+        bookGrid.appendChild(bookCard);
+      });
+    }
+    
+    function showBookDetails(bookId) {
+      const book = books.find(b => b.id === bookId);
+      if (!book) return;
+      alert(`Crop Supply Details:\n\nProduce: ${book.title}\nProducer: ${book.author}\nCategory: ${book.genre}\nBatch/Region Code: ${book.isbn}\nAvailable Stock: ${book.available} units\n\nDescription: ${book.description}`);
+    }
+    
+    function issueBook(bookId) {
+      const book = books.find(b => b.id === bookId);
+      if (!book || book.available <= 0) {
+        showNotification('This crop stock is currently exhausted.', 'error');
+        return;
+      }
+      
+      book.available -= 1;
+      
+      if (!currentUser.books) {
+        currentUser.books = [];
+      }
+      
+      currentUser.books.push({
+        id: book.id,
+        title: book.title,
+        issueDate: new Date().toISOString().split('T')[0],
+        dueDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        returned: false
+      });
+      
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const userIndex = users.findIndex(u => u.name === currentUser.name);
+      if (userIndex !== -1) {
+        users[userIndex] = currentUser;
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+      
+      updateStatistics();
+      showNotification(`Direct order placed successfully for "${book.title}"!`);
+      
+      if (currentUser.email) {
+        emailjs.send("service_598ru0p", "template_mmm8fwm", {
+          name: currentUser.name,
+          bookName: book.title,
+          email: currentUser.email
+        }).catch(err => console.log(err));
+      }
+      
+      renderBooks();
+      renderStudentBooks();
+    }
+    
+    function renderStudentBooks() {
+      const studentBooksTable = document.getElementById('student-books');
+      studentBooksTable.innerHTML = '';
+      
+      if (!currentUser.books || currentUser.books.length === 0) {
+        studentBooksTable.innerHTML = '<tr><td colspan="5" style="text-align:center;">No direct crop orders placed yet.</td></tr>';
+        return;
+      }
+      
+      currentUser.books.forEach(book => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${book.title}</td>
+          <td>${book.issueDate}</td>
+          <td>${book.dueDate}</td>
+          <td class="status-available">Dispatched / Confirmed</td>
+          <td><button class="action-btn success" onclick="returnBook('${book.id}')"><i class="fas fa-check"></i> Received</button></td>
+        `;
+        studentBooksTable.appendChild(row);
+      });
+    }
+    
+    function returnBook(bookId) {
+      if (!currentUser.books) return;
+      const bookIndex = currentUser.books.findIndex(b => b.id === bookId);
+      if (bookIndex === -1) return;
+      
+      const bookTitle = currentUser.books[bookIndex].title;
+      currentUser.books.splice(bookIndex, 1);
+      
+      const book = books.find(b => b.id === bookId);
+      if (book) { book.available += 1; }
+      
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const userIndex = users.findIndex(u => u.name === currentUser.name);
+      if (userIndex !== -1) {
+        users[userIndex] = currentUser;
+        localStorage.setItem('users', JSON.stringify(users));
+      }
+      
+      updateStatistics();
+      showNotification(`Order "${bookTitle}" marked as delivered & completed!`);
+      renderBooks();
+      renderStudentBooks();
+    }
+    
+    function requestBook(event) {
+      event.preventDefault();
+      const title = document.getElementById('request-title').value;
+      const author = document.getElementById('request-author').value;
+      const reason = document.getElementById('request-reason').value;
+      
+      const newRequest = {
+        id: 'r' + (bookRequests.length + 1),
+        studentName: currentUser.name,
+        bookTitle: title,
+        author: author,
+        requestDate: new Date().toISOString().split('T')[0],
+        status: 'Pending',
+        reason: reason
+      };
+      
+      bookRequests.push(newRequest);
+      localStorage.setItem('bookRequests', JSON.stringify(bookRequests));
+      document.getElementById('book-request-form').reset();
+      
+      showNotification('Demand requirement successfully broadcasted to FPOs!');
+      renderBookRequests();
+    }
+    
+    function renderBookRequests() {
+      const requestsTable = document.getElementById('book-requests');
+      requestsTable.innerHTML = '';
+      bookRequests = JSON.parse(localStorage.getItem('bookRequests')) || [];
+      
+      if (bookRequests.length === 0) {
+        requestsTable.innerHTML = '<tr><td colspan="5" style="text-align:center;">No pending demand forecasts or bookings.</td></tr>';
+        return;
+      }
+      
+      bookRequests.forEach(request => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${request.studentName}</td>
+          <td>${request.bookTitle} (${request.author})</td>
+          <td>${request.requestDate}</td>
+          <td class="status-${request.status.toLowerCase()}">${request.status}</td>
+          <td>
+            ${request.status === 'Pending' ? `
+              <button class="action-btn success" onclick="approveRequest('${request.id}')"><i class="fas fa-check"></i> Match</button>
+              <button class="action-btn danger" onclick="rejectRequest('${request.id}')"><i class="fas fa-times"></i> Dismiss</button>
+            ` : 'Processed'}
+          </td>
+        `;
+        requestsTable.appendChild(row);
+      });
+    }
+    
+    function approveRequest(requestId) {
+      const request = bookRequests.find(r => r.id === requestId);
+      if (!request) return;
+      request.status = 'Approved';
+      localStorage.setItem('bookRequests', JSON.stringify(bookRequests));
+      
+      books.push({
+        id: 'b' + (books.length + 1),
+        title: request.bookTitle,
+        author: request.studentName,
+        genre: 'Grains',
+        isbn: 'LOC-AI-' + Math.floor(Math.random() * 1000),
+        copies: 10,
+        available: 10,
+        issued: 0,
+        description: request.reason
+      });
+      
+      updateStatistics();
+      showNotification(`Demand matched! Listing created for "${request.bookTitle}".`);
+      renderBookRequests();
+      renderBooks();
+    }
+    
+    function rejectRequest(requestId) {
+      const request = bookRequests.find(r => r.id === requestId);
+      if (!request) return;
+      request.status = 'Rejected';
+      localStorage.setItem('bookRequests', JSON.stringify(bookRequests));
+      showNotification(`Demand request dismissed.`);
+      renderBookRequests();
+    }
+    
+    function addBook(event) {
+      event.preventDefault();
+      const title = document.getElementById('book-title').value;
+      const author = document.getElementById('author').value;
+      const genre = document.getElementById('genre').value;
+      const isbn = document.getElementById('isbn').value;
+      const copies = parseInt(document.getElementById('copies').value);
+      
+      books.push({
+        id: 'b' + (books.length + 1),
+        title, author, genre, isbn,
+        copies: copies,
+        available: copies,
+        issued: 0,
+        description: 'Direct harvest listing via Farmers2u marketplace.'
+      });
+      
+      document.getElementById('add-book-form').reset();
+      updateStatistics();
+      showNotification('New harvest listing published successfully!');
+      renderBooks();
+    }
+    
+    function renderLibrarianList() {
+      const list = document.getElementById('librarian-dropdown');
+      list.innerHTML = '';
+      librarians.forEach(librarian => {
+        const li = document.createElement('div');
+        li.className = 'dropdown-item';
+        li.innerHTML = `<span>${librarian}</span>`;
+        list.appendChild(li);
+      });
+    }
+    
+    function addAdmin(event) {
+      event.preventDefault();
+      const name = document.getElementById('admin-name').value.trim();
+      if (!name || librarians.includes(name)) return;
+      librarians.push(name);
+      localStorage.setItem('librarians', JSON.stringify(librarians));
+      document.getElementById('add-admin-form').reset();
+      showNotification(`Logistics coordinator ${name} added!`);
+      renderLibrarianList();
+    }
+    
+    function filterBooks() {
+      const searchTerm = document.getElementById('search-input').value.toLowerCase();
+      const genreFilter = document.getElementById('genre-filter').value;
+      
+      const filteredBooks = books.filter(book => {
+        const matchesSearch = book.title.toLowerCase().includes(searchTerm) || 
+                             book.author.toLowerCase().includes(searchTerm) || 
+                             book.isbn.toLowerCase().includes(searchTerm);
+        const matchesGenre = genreFilter === '' || book.genre === genreFilter;
+        return matchesSearch && matchesGenre;
+      });
+      
+      renderBooks(filteredBooks);
+    }
+    
+    function resetSearch() {
+      document.getElementById('search-input').value = '';
+      document.getElementById('genre-filter').value = '';
+      renderBooks(books);
+    }
+    
+    function renderStudents() {
+      const listContainer = document.getElementById('student-dropdown');
+      listContainer.innerHTML = '';
+      students.forEach(student => {
+        const item = document.createElement('div');
+        item.className = 'dropdown-item';
+        item.innerHTML = `<strong>${student.name}</strong><br><small>${student.email} | ${student.grade}</small>`;
+        listContainer.appendChild(item);
+      });
+    }
+    
+    function addStudent() {
+      const name = document.getElementById('student-name').value.trim();
+      const email = document.getElementById('student-email').value.trim();
+      const grade = document.getElementById('student-grade').value;
+      
+      if (!name || !email || !grade) {
+        showNotification('Please fill all stakeholder details', 'error');
+        return;
+      }
+      
+      students.push({ id: 's' + (students.length + 1), name, email, grade });
+      localStorage.setItem('students', JSON.stringify(students));
+      
+      document.getElementById('student-name').value = '';
+      document.getElementById('student-email').value = '';
+      document.getElementById('student-grade').value = '';
+      
+      updateStatistics();
+      showNotification(`Stakeholder ${name} registered successfully!`);
+      renderStudents();
+    }
+    
+    function showNotification(message, type = 'success') {
+      const notification = document.getElementById('system-notification');
+      const text = document.getElementById('notification-text');
+      text.textContent = message;
+      notification.style.background = type === 'success' ? 'var(--success)' : 'var(--danger)';
+      notification.classList.add('show');
+      setTimeout(() => { notification.classList.remove('show'); }, 3000);
+    }
+  </script>
+</body>
+</html>
