@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Farmers2u - Direct Agri-Market Access Portal</title>
+  <link href="https://fonts.cdnfonts.com/css/minecraftia" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function() {
+      emailjs.init("7NcG8l9BWJI2m0_g-");
+    })();
+  </script>
+  <style>
+    :root {
+      --primary: #1b3017;
+      --secondary: #2d4a27;
+      --accent: #4caf50;
+      --accent-light: #81c784;
+      --text-dark: #f4f4f4;
+      --text-light: #ffffff;
+      --muted-text: #aaaaaa;
+      --success: #4CAF50;
+      --warning: #FF9800;
+      --danger: #F44336;
+      --card-bg: rgba(27, 48, 23, 0.85);
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+
+    body, h1, h2, h3, label, input, select, button, .toggle-text, .error-message, .success-message {
+      font-family: 'Minecraftia', 'Press Start 2P', monospace, sans-serif !important;
+    }
+
+    /* Prevent FontAwesome icons from rendering as fallback square boxes */
+    .fa, .fas, .far, .fal, .fab {
+      font-family: "Font Awesome 6 Free", "Font Awesome 6 Brands" !important;
+      display: inline-block;
+      font-style: normal;
+      font-variant: normal;
+      text-rendering: auto;
+      -webkit-font-smoothing: antialiased;
+      margin-right: 8px;
+    }
+    
+    body {
+      padding: 20px;
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?q=80&w=1920&auto=format&fit=crop') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--text-dark);
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .container {
+      max-width: 500px;
+      width: 100%;
+    }
+    
+    h1, h2, h3 {
+      text-align: center;
+      color: var(--text-light);
+      margin: 0 0 1rem 0;
+    }
+    
+    h1 {
+      font-size: 1.8em;
+      margin-bottom: 25px;
+      text-shadow: 2px 2px 3px rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+    }
+    
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      color: var(--text-light);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    
+    .card h2 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    label, input, select, button {
+      display: block;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    label {
+      font-size: 0.85rem;
+      color: #e0e0e0;
+    }
+    
+    input, select {
+      padding: 12px;
+      border: 2px solid var(--secondary);
+      border-radius: 6px;
+      background: rgba(40, 50, 40, 0.9);
+      font-size: 0.9rem;
+      color: #fff;
+    }
+
+    input::placeholder {
+      color: #777;
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+    
+    button {
+      background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+      color: var(--text-light);
+      padding: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      margin-top: 20px;
+    }
+    
+    button:hover { opacity: 0.9; transform: scale(1.01); }
+    button.primary { background: linear-gradient(135deg, #2e7d32 0%, #4caf50 100%); }
+    button.success { background: linear-gradient(135deg, var(--success) 0%, #66BB6A 100%); }
+    
+    .toggle-text {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.8rem;
+      color: var(--muted-text);
+    }
+    
+    .toggle-text a { color: var(--accent-light); text-decoration: none; cursor: pointer; }
+    .toggle-text a:hover { text-decoration: underline; }
+    
+    .logo { 
+      text-align: center; 
+      margin-bottom: 15px; 
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Pixel art plant graphic with two leaves matching your reference image */
+    .pixel-plant {
+      position: relative;
+      width: 70px;
+      height: 70px;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pixel-plant .leaf-box-1 {
+      position: absolute;
+      width: 28px;
+      height: 28px;
+      background: #4caf50;
+      left: 32px;
+      top: 20px;
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.15);
+    }
+
+    .pixel-plant .leaf-box-2 {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      background: #66bb6a;
+      left: 18px;
+      top: 32px;
+      box-shadow: 2px 2px 0px rgba(0,0,0,0.15);
+    }
+    
+    .error-message {
+      background: rgba(244, 67, 54, 0.2);
+      border: 1px solid var(--danger);
+      border-radius: 6px;
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 0.8rem;
+      color: #ff6b6b;
+      display: none;
+    }
+    
+    .success-message {
+      background: rgba(76, 175, 80, 0.2);
+      border: 1px solid var(--success);
+      border-radius: 6px;
+      padding: 10px;
+      margin-top: 15px;
+      font-size: 0.8rem;
+      color: var(--success);
+      display: none;
+    }
+
+    /* Chatbot Floating Widget Styles */
+    .chatbot-toggler {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      outline: none;
+      border: none;
+      height: 60px;
+      width: 60px;
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      z-index: 9999;
+    }
+    .chatbot-toggler:hover {
+      transform: scale(1.1);
+    }
+    .chatbot-toggler i {
+      color: #fff;
+      font-size: 1.5rem;
+      margin-right: 0 !important;
+    }
+    .chatbot-container {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 380px;
+      background: var(--card-bg);
+      backdrop-filter: blur(15px);
+      border-radius: 15px;
+      border: 1px solid rgba(76, 175, 80, 0.4);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.5);
+      transform-origin: bottom right;
+      transition: all 0.3s ease;
+      z-index: 9999;
+    }
+    body.show-chatbot .chatbot-container {
+      opacity: 1;
+      pointer-events: auto;
+      transform: scale(1);
+    }
+    .chat-header {
+      padding: 15px 20px;
+      background: var(--secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .chat-header h3 {
+      color: var(--text-light);
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0;
+    }
+    .chat-header .close-btn {
+      color: var(--text-light);
+      cursor: pointer;
+      font-size: 1.1rem;
+      background: none;
+      border: none;
+      width: auto;
+      margin: 0;
+      padding: 0;
+    }
+    .chat-box {
+      height: 320px;
+      overflow-y: auto;
+      padding: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .chat-message {
+      max-width: 80%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 0.78rem;
+      line-height: 1.4;
+    }
+    .chat-message.incoming {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-light);
+      align-self: flex-start;
+      border-bottom-left-radius: 2px;
+    }
+    .chat-message.outgoing {
+      background: var(--accent);
+      color: #fff;
+      align-self: flex-end;
+      border-bottom-right-radius: 2px;
+    }
+    .chat-input-area {
+      display: flex;
+      padding: 10px;
+      background: rgba(17, 34, 14, 0.95);
+      border-top: 1px solid rgba(255,255,255,0.1);
+      gap: 8px;
+    }
+    .chat-input-area input {
+      flex: 1;
+      padding: 10px;
+      font-size: 0.78rem;
+      border-radius: 8px;
+      border: 1px solid var(--accent);
+      background: #fff;
+      color: #222;
+      margin-top: 0;
+      width: auto;
+    }
+    .chat-input-area button {
+      padding: 10px 15px;
+      font-size: 0.78rem;
+      margin-top: 0;
+      width: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <div class="pixel-plant">
+        <div class="leaf-box-1"></div>
+        <div class="leaf-box-2"></div>
+      </div>
+    </div>
+    <h1>Farmers2u Portal</h1>
+    
+    <div class="card" id="login-card">
+      <h2><i class="fas fa-sign-in-alt"></i> Login Access</h2>
+      <div class="error-message" id="login-error"><span id="login-error-text"></span></div>
+      
+      <form id="login-form">
+        <label>Email / Admin ID</label>
+        <input type="text" id="login-email" placeholder="farmer@market.com" required>
+        
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="********" required>
+        
+        <button type="submit" class="primary"><i class="fas fa-unlock"></i> Enter Portal</button>
+      </form>
+      
+      <div class="toggle-text">New to Farmers2u? <a id="show-signup">Register here</a></div>
+    </div>
+    
+    <div class="card" id="signup-card" style="display:none;">
+      <h2><i class="fas fa-user-plus"></i> Join Farmers2u</h2>
+      <div class="error-message" id="signup-error"><span id="signup-error-text"></span></div>
+      
+      <form id="signup-form">
+        <label>Full Name / FPO Name</label>
+        <input type="text" id="signup-name" placeholder="Enter name" required>
+        
+        <label>Email Address</label>
+        <input type="email" id="signup-email" placeholder="Enter email for OTP" required>
+        
+        <label>Password</label>
+        <input type="password" id="signup-password" placeholder="Create password" required>
+        
+        <label>Stakeholder Role</label>
+        <select id="signup-grade" required>
+          <option value="">Select your role</option>
+          <option value="Farmer">Independent Farmer</option>
+          <option value="FPO">FPO Representative</option>
+          <option value="Buyer">Bulk Buyer / Retailer</option>
+          <option value="Consumer">Consumer Direct</option>
+        </select>
+        
+        <button type="submit" class="success"><i class="fas fa-paper-plane"></i> Send Verification OTP</button>
+      </form>
+      
+      <div class="toggle-text">Already registered? <a id="show-login">Login here</a></div>
+    </div>
+
+    <div class="card" id="otp-card" style="display:none;">
+      <h2><i class="fas fa-shield-alt"></i> Verify Email OTP</h2>
+      <div class="success-message" id="otp-success" style="display:block;">6-digit OTP sent to your email. Please verify.</div>
+      <div class="error-message" id="otp-error"><span id="otp-error-text"></span></div>
+      
+      <form id="otp-form">
+        <label>Enter 6-digit OTP</label>
+        <input type="text" id="otp-input" placeholder="123456" maxlength="6" required>
+        
+        <button type="submit" class="success"><i class="fas fa-check-circle"></i> Verify & Create Account</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Chatbot Floating Widget UI Elements -->
+  <button class="chatbot-toggler" onclick="toggleChatbot()">
+    <i class="fas fa-comment-dots"></i>
+  </button>
+
+  <div class="chatbot-container">
+    <div class="chat-header">
+      <h3><i class="fas fa-seedling"></i> Farmers2u AI Support</h3>
+      <button class="close-btn" onclick="toggleChatbot()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="chat-box" id="chat-box">
+      <div class="chat-message incoming">Hello! Welcome to Farmers2u. How can I help you navigate marketplace listings or login questions today?</div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" id="chat-input" placeholder="Ask about login, crops, orders..." onkeypress="handleChatKeyPress(event)">
+      <button class="primary" onclick="sendChatMessage()"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script>
+    // OpenRouter API Configuration
+    const OPENROUTER_API_KEY = "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";
+    const OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions";
+
+    const defaultLibrarians = ["tanzeel@example.com"];
+    let generatedOtp = "";
+    let tempUserData = null;
+    
+    function initializeStorage() {
+      if (!localStorage.getItem('librarians')) localStorage.setItem('librarians', JSON.stringify(defaultLibrarians));
+      if (!localStorage.getItem('users')) localStorage.setItem('users', JSON.stringify([]));
+      if (!localStorage.getItem('blockedEmails')) localStorage.setItem('blockedEmails', JSON.stringify([]));
+      if (!localStorage.getItem('adminCredentials')) {
+        localStorage.setItem('adminCredentials', JSON.stringify({ username: "admin", password: "adminpassword123" }));
+      }
+      if (!localStorage.getItem('auditLogs')) {
+        localStorage.setItem('auditLogs', JSON.stringify([]));
+      }
+    }
+
+    function logAudit(action, details) {
+      const logs = JSON.parse(localStorage.getItem('auditLogs')) || [];
+      logs.unshift({
+        timestamp: new Date().toISOString(),
+        action: action,
+        details: details
+      });
+      localStorage.setItem('auditLogs', JSON.stringify(logs));
+    }
+    
+    function showLogin() {
+      document.getElementById('login-card').style.display = 'block';
+      document.getElementById('signup-card').style.display = 'none';
+      document.getElementById('otp-card').style.display = 'none';
+    }
+    
+    function showSignup() {
+      document.getElementById('login-card').style.display = 'none';
+      document.getElementById('signup-card').style.display = 'block';
+      document.getElementById('otp-card').style.display = 'none';
+    }
+    
+    function handleLogin(e) {
+      e.preventDefault();
+      const inputId = document.getElementById('login-email').value.trim().toLowerCase();
+      const password = document.getElementById('login-password').value;
+      const errorElement = document.getElementById('login-error');
+      const errorText = document.getElementById('login-error-text');
+      
+      const blockedEmails = JSON.parse(localStorage.getItem('blockedEmails') || '[]');
+      if (blockedEmails.includes(inputId)) {
+        errorText.textContent = "Access denied. This account has been blocked by the administrator.";
+        errorElement.style.display = 'block';
+        return;
+      }
+      
+      const adminCreds = JSON.parse(localStorage.getItem('adminCredentials')) || { username: "admin", password: "adminpassword123" };
+      
+      if (inputId === adminCreds.username.toLowerCase() && password === adminCreds.password) {
+        const adminUser = { name: "System Administrator", email: "admin@farmers2u.internal", role: "admin" };
+        localStorage.setItem('currentUser', JSON.stringify(adminUser));
+        logAudit("ADMIN_LOGIN", "System Administrator logged into the admin tracking portal.");
+        window.location.href = "SIHDashboard.html";
+        return;
+      }
+      
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const librarians = JSON.parse(localStorage.getItem('librarians') || '[]');
+      
+      const user = users.find(u => u.email.toLowerCase() === inputId && u.password === password);
+      
+      if (!user) {
+        errorText.textContent = "Invalid email/username or password, or account not yet registered!";
+        errorElement.style.display = 'block';
+        logAudit("FAILED_LOGIN", `Failed login attempt for identifier: ${inputId}`);
+        return;
+      }
+      
+      user.role = librarians.includes(user.email.toLowerCase()) ? 'librarian' : 'student';
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      logAudit("USER_LOGIN", `User logged in: ${user.email} (${user.grade || 'Role not specified'})`);
+      
+      const loginParams = {
+        to_email: user.email,
+        email: user.email,
+        name: user.name,
+        message: `Hello ${user.name}, you have successfully logged into Farmers2u Portal.`,
+        from_name: "Farmers2u Support",
+        project_name: "Farmers2u"
+      };
+      
+      emailjs.send("service_9ncnqaw", "template_tjgw9p5", loginParams)
+        .then(() => {
+          window.location.href = "SIHDashboard.html";
+        })
+        .catch(err => {
+          console.error("EmailJS Error:", err);
+          window.location.href = "SIHDashboard.html";
+        });
+    }
+    
+    function handleSignup(e) {
+      e.preventDefault();
+      const name = document.getElementById('signup-name').value.trim();
+      const email = document.getElementById('signup-email').value.trim().toLowerCase();
+      const password = document.getElementById('signup-password').value;
+      const grade = document.getElementById('signup-grade').value;
+      const errorElement = document.getElementById('signup-error');
+      const errorText = document.getElementById('signup-error-text');
+      
+      const blockedEmails = JSON.parse(localStorage.getItem('blockedEmails') || '[]');
+      if (blockedEmails.includes(email)) {
+        errorText.textContent = "This email address has been permanently blocked.";
+        errorElement.style.display = 'block';
+        return;
+      }
+      
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      if (users.some(u => u.email.toLowerCase() === email)) {
+        tempUserData = users.find(u => u.email.toLowerCase() === email);
+        tempUserData.name = name;
+        tempUserData.password = password;
+        tempUserData.grade = grade;
+        
+        generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+        
+        const templateParams = {
+          to_email: email,
+          email: email,
+          passcode: generatedOtp,
+          time: "15 minutes",
+          message: `Your Farmers2u verification OTP is: ${generatedOtp}`,
+          from_name: "Farmers2u Portal",
+          project_name: "Farmers2u"
+        };
+
+        emailjs.send("service_9ncnqaw", "template_j9y0r6l", templateParams)
+          .then(() => {
+            document.getElementById('signup-card').style.display = 'none';
+            document.getElementById('otp-card').style.display = 'block';
+            document.getElementById('otp-success').textContent = "Account already exists. New verification OTP sent to your email.";
+            logAudit("OTP_RESENT", `Verification OTP re-dispatched to email: ${email}`);
+          })
+          .catch(err => {
+            errorText.textContent = "Failed to send OTP email. Please check your network or EmailJS configuration.";
+            errorElement.style.display = 'block';
+            console.error("EmailJS Error:", err);
+          });
+        return;
+      }
+      
+      generatedOtp = Math.floor(100000 + Math.random() * 900000).toString();
+      tempUserData = { name, email, password, grade, role: 'student', joinDate: new Date().toISOString().split('T')[0] };
+      
+      const templateParams = {
+        to_email: email,
+        email: email,
+        passcode: generatedOtp,
+        time: "15 minutes",
+        message: `Your Farmers2u verification OTP is: ${generatedOtp}`,
+        from_name: "Farmers2u Portal",
+        project_name: "Farmers2u"
+      };
+
+      emailjs.send("service_9ncnqaw", "template_j9y0r6l", templateParams)
+        .then(() => {
+          document.getElementById('signup-card').style.display = 'none';
+          document.getElementById('otp-card').style.display = 'block';
+          document.getElementById('otp-success').textContent = "6-digit OTP sent to your email. Please verify.";
+          logAudit("OTP_SENT", `Verification OTP dispatched to new registration email: ${email}`);
+        })
+        .catch(err => {
+          errorText.textContent = "Failed to send OTP email. Please check your network or EmailJS configuration.";
+          errorElement.style.display = 'block';
+          console.error("EmailJS Error:", err);
+        });
+    }
+    
+    function handleOtpVerify(e) {
+      e.preventDefault();
+      const enteredOtp = document.getElementById('otp-input').value.trim();
+      const errorElement = document.getElementById('otp-error');
+      const errorText = document.getElementById('otp-error-text');
+      
+      if (enteredOtp !== generatedOtp) {
+        errorText.textContent = "Incorrect OTP. Please try again.";
+        errorElement.style.display = 'block';
+        logAudit("FAILED_OTP", `Incorrect OTP entered for registration email: ${tempUserData ? tempUserData.email : 'unknown'}`);
+        return;
+      }
+      
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const librarians = JSON.parse(localStorage.getItem('librarians') || '[]');
+      if (librarians.includes(tempUserData.email.toLowerCase())) {
+        tempUserData.role = 'librarian';  
+      }
+      
+      const existingIndex = users.findIndex(u => u.email.toLowerCase() === tempUserData.email.toLowerCase());
+      if (existingIndex >= 0) {
+        users[existingIndex] = tempUserData;
+      } else {
+        users.push(tempUserData);
+      }
+      
+      localStorage.setItem('users', JSON.stringify(users));
+      localStorage.setItem('currentUser', JSON.stringify(tempUserData));
+      logAudit("USER_REGISTERED", `New user successfully registered and verified: ${tempUserData.email} (${tempUserData.grade})`);
+        
+      window.location.href = "SIHDashboard.html";
+    }
+
+    // Chatbot Interactive Scripts Powered by OpenRouter API
+    function toggleChatbot() {
+      document.body.classList.toggle('show-chatbot');
+    }
+
+    function handleChatKeyPress(event) {
+      if (event.key === 'Enter') {
+        sendChatMessage();
+      }
+    }
+
+    async function sendChatMessage() {
+      const inputElem = document.getElementById('chat-input');
+      const chatBox = document.getElementById('chat-box');
+      const userText = inputElem.value.trim();
+      
+      if (!userText) return;
+      
+      // Append User Message
+      const userMsgDiv = document.createElement('div');
+      userMsgDiv.className = 'chat-message outgoing';
+      userMsgDiv.textContent = userText;
+      chatBox.appendChild(userMsgDiv);
+      
+      inputElem.value = '';
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      // Add loading/typing indicator message
+      const botMsgDiv = document.createElement('div');
+      botMsgDiv.className = 'chat-message incoming';
+      botMsgDiv.textContent = "Thinking...";
+      chatBox.appendChild(botMsgDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      
+      try {
+        const response = await fetch(OPENROUTER_URL, {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": window.location.origin,
+            "X-Title": "Farmers2u Portal"
+          },
+          body: JSON.stringify({
+            model: "openai/gpt-4o-mini", // Cost-effective, highly reliable model available via OpenRouter
+            messages: [
+              {
+                role: "system",
+                content: "You are Farmers2u AI Support, a helpful assistant for the Farmers2u direct agri-market access portal. Help users navigate marketplace login, registration, OTP troubleshooting, and agricultural trading features warmly and concisely."
+              },
+              {
+                role: "user",
+                content: userText
+              }
+            ]
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`API error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const botReply = data.choices && data.choices[0] && data.choices[0].message 
+          ? data.choices[0].message.content 
+          : "I received your message, but couldn't parse a response.";
+
+        botMsgDiv.textContent = botReply;
+      } catch (error) {
+        console.error("OpenRouter API Error:", error);
+        botMsgDiv.textContent = "Sorry, I'm having trouble connecting to the AI server right now. Please check your login credentials or network connection.";
+      } finally {
+        chatBox.scrollTop = chatBox.scrollHeight;
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      initializeStorage();
+      document.getElementById('show-signup').addEventListener('click', showSignup);
+      document.getElementById('show-login').addEventListener('click', showLogin);
+      document.getElementById('login-form').addEventListener('submit', handleLogin);
+      document.getElementById('signup-form').addEventListener('submit', handleSignup);
+      document.getElementById('otp-form').addEventListener('submit', handleOtpVerify);
+    });
+  </script>
+</body>
+</html>
